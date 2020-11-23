@@ -1,0 +1,188 @@
+{
+  "exam": [
+    {
+      "q": "Horse racing annual betting revenue (#1)?",
+      "a": "116b"
+    },
+    {
+      "q": "NFL annual revenue (#1)?",
+      "a": "13b"
+    },
+    {
+      "q": "MLB annual revenue (#2)?",
+      "a": "9.5b"
+    },
+    {
+      "q": "NBA annual revenue (#3)?",
+      "a": "5.2b"
+    },
+    {
+      "q": "NHL annual revenue (#4)?",
+      "a": "3.7b"
+    },
+    {
+      "q": "MLS annual revenue (#5)?",
+      "a": "900m"
+    },
+    {
+      "q": "CFL annual revenue (#6)?",
+      "a": "200m"
+    },
+    {
+      "q": "English Premier League annual revenue (#7)?",
+      "a": "7b"
+    },
+    {
+      "q": "La Liga (Spain) annual revenue (#8)?",
+      "a": "4b"
+    },
+    {
+      "q": "Bundesliga (Germany) annual revenue (#9)?",
+      "a": "4b"
+    },
+    {
+      "q": "Serie A (Italy) annual revenue (#10)?",
+      "a": "2b"
+    },
+    {
+      "q": "UEFA (Europe) annual revenue (#11)?",
+      "a": "2b"
+    },
+    {
+      "q": "Formula 1 annual revenue (#12)?",
+      "a": "1.8b"
+    },
+    {
+      "q": "Nascar annual revenue (#?)?",
+      "a": "1b"
+    },
+    {
+      "q": "NFL #games season?",
+      "a": "16"
+    },
+    {
+      "q": "MLB #games season?",
+      "a": "162"
+    },
+    {
+      "q": "NBA #games season?",
+      "a": "82"
+    },
+    {
+      "q": "NHL #games season?",
+      "a": "82"
+    },
+    {
+      "q": "MLS #games season?",
+      "a": "34"
+    },
+    {
+      "q": "CFL #games season?",
+      "a": "18"
+    },
+    {
+      "q": "English Premier League #games season?",
+      "a": "38"
+    },
+    {
+      "q": "La Liga (Spain) #games season?",
+      "a": "38"
+    },
+    {
+      "q": "Bundesliga (Germany) #games season?",
+      "a": "34"
+    },
+    {
+      "q": "Serie A (Italy) #games season?",
+      "a": "38"
+    },
+    {
+      "q": "Formula 1 #races season?",
+      "a": "8"
+    },
+    {
+      "q": "Nascar #races season?",
+      "a": "38"
+    },
+    {
+      "q": "NFL tv revenue (#1)?",
+      "a": "7.2b"
+    },
+    {
+      "q": "MLB tv revenue (#2)?",
+      "a": "1.5b"
+    },
+    {
+      "q": "NBA tv revenue (#3)?",
+      "a": "2.6b"
+    },
+    {
+      "q": "NHL tv revenue (#4)?",
+      "a": "600m"
+    },
+    {
+      "q": "MLS tv revenue (#5)?",
+      "a": "90m"
+    },
+    {
+      "q": "CFL tv revenue (#6)?",
+      "a": "40m"
+    },
+    {
+      "q": "Nascar tv revenue?",
+      "a": "660m"
+    },
+    {
+      "q": "#NFL teams?",
+      "a": "32"
+    },
+    {
+      "q": "#MLB teams?",
+      "a": "30"
+    },
+    {
+      "q": "#NBA teams?",
+      "a": "30"
+    },
+    {
+      "q": "#NHL teams?",
+      "a": "32"
+    },
+    {
+      "q": "#MLS teams?",
+      "a": "26"
+    },
+    {
+      "q": "#CFL teams?",
+      "a": "9"
+    },
+    {
+      "q": "#English Premier League teams?",
+      "a": "20"
+    },
+    {
+      "q": "#La Liga (Spain) teams?",
+      "a": "20"
+    },
+    {
+      "q": "#Bundesliga (Germany) teams?",
+      "a": "18"
+    },
+    {
+      "q": "#Serie A (Italy) teams?",
+      "a": "20"
+    },
+    {
+      "q": "#UEFA (Europe) teams?",
+      "a": "32"
+    },
+    {
+      "q": "#Formula 1 teams?",
+      "a": "10"
+    },
+    {
+      "q": "#Nascar teams?",
+      "a": "17"
+    }
+  ]
+}
