@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Administrative Actions</title>
+{% endblock %}
+
+{% block base_subtitle %}
+  <span style="font-size:14px; vertical-align:middle;">
+    Admin options
+  </span><br>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Administrative Actions</h2>
+
+    {% if notification %}
+      <p><b>Notification</b>: {{notification}}</p>
+      <hr>
+    {% endif %}
+    <br>
+    <br>
+
+    From gs:/{{ datafile }}:
+    <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary"
+       id="deletebutton" href="/admin/manage?action=reinit">
+      RESET METADATA INDEX
+    </a>
+    <div class="mdl-tooltip" data-mdl-for="deletebutton">
+      Delete all datastore/index data and reload index.
+    </div>
+    <br>
+
+    From YouTube metadata:
+    <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary"
+       id="diffbutton" href="/admin/metadiff">
+      SHOW DIFFERENCES
+    </a>
+    <div class="mdl-tooltip" data-mdl-for="diffbutton">
+      Show counts and differences between YouTube and us in csv.
+    </div>
+    <br>
+
+     {#
+     {% if admin_create_url %}
+       <a href="{{ admin_create_url }}">
+         <b>{{ admin_create_text }}</b>
+       </a>
+     {% endif %}
+     #}
+
+     {#
+     <li><a href="/admin/manage?action=demo_update">Demo loading video <b>update</b> data</a>
+        (from 'data/{{update_sample}}'.  Click this <em>after</em> you have loaded sample data via the link above, to see the effect of the update).</li>
+
+     <li>
+          <a href="/admin/manage?action=update_ratings">
+            Re-index any documents that have an updated average rating.
+          </a>
+     </li>
+
+     <li><a href="/admin/create_video">Create a new video</a>.
+     #}
+
+    </ul>
+
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Published Playlists</title>
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Next '18 YouTube Playlists</h2>
+
+<ul>
+  {% for p in playlists18 %}
+  <li>
+    <a href="https://www.youtube.com/playlist?list={{ p.playlist_id }}"
+       target="_blank">
+      {{ p.label }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

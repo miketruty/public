@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Official Next '19</title>
+{% endblock %}
+
+
+{% block content %}
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+
+      <h3>Official Next '19 Searches</h3>
+
+      <ul>
+        <li>
+          <a href="https://cloud.withgoogle.com/next/sf/"
+            target="_blank">
+            Official Next '19 from San Francisco
+          </a>
+        </li>
+        <li>
+          <a href="https://cloud.withgoogle.com/next/sf/sessions"
+            target="_blank">
+            Next '19 sessions
+          </a>
+        </li>
+        <li>
+          <a href="https://cloud.withgoogle.com/next/sf/speakers"
+              target="_blank">
+            Next '19 speakers
+        </a>
+        </li>
+      </ul>
+
+      <h3>Tracks</h3>
+
+      <ul>
+        {% for s in next19_tracks %}
+        <li>
+          <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      </td>
+      <td>
+
+      <h3>Session Types</h3>
+
+      <ul>
+        {% for s in next19_types %}
+        <li>
+          <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <h3>Learning Levels</h3>
+
+      <ul>
+        {% for s in next19_levels %}
+        <li>
+          <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <h3>Industries</h3>
+
+      <ul>
+        {% for s in next19_industries %}
+        <li>
+          <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>
+
+{% endblock %}

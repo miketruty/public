@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Search Criteria Hints</title>
+{% endblock %}
+
+
+{% block content %}
+
+<h3>Search Criteria Hints</h3>
+
+In general, entering free-form text as search criteria works pretty well.<br>
+This is called <b>Global search</b> and includes the use of field-values.<br>
+Alternatively, <b>Field search</b> is the use of queries that include
+field names.<br>
+<br>
+Entering a single word like 'security' or 'kubernetes' (a Global search)<br>
+ seems to match useful content very well.  However, some may prefer more<br>
+precise searching. It's helpful to look through the <b>Query Strings</b><br>
+reference linked below for the details.<br>
+<br>
+
+A few of the most common reminders for queries:
+<ul>
+  <li>A space is an IMPLIED AND operator.</li>
+  <li>Boolean operators (AND, OR, NOT) must be <b>CAPITALIZED</b>.</li>
+  <li>You can use &gt; and &lt; operators with NUMBER and DATE fields.</li>
+  <li>Our fields are listed below.
+</ul>
+
+<h3>Field (Data) Schema</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>index: 'videosearch1'</li>
+          <li>fields:
+            <ul>
+              <li>title: TEXT</li>
+              <li>subtitle: TEXT</li>
+              <li>description: TEXT</li>
+              <li>
+                event: ATOM (next2016, next2017, next2018, next2019, next2020, solution, accelerate2017)
+              </li>
+              <li>published_date: DATE (full date - no partial matching)</li>
+              <li>published_date> DATE (full date - no partial matching)</li>
+              <li>speakers: TEXT</li>
+              <li>video_id: TEXT</li>
+              <li>duration_min: TEXT</li>
+            </ul>
+          </li>
+        </ul>
+      </td>
+      <td>
+        Subtitles
+        <ul>
+          <li>qlCourse</li>
+          <li>qlModule</li>
+          <li>qlQuest</li>
+          <li>qlLab</li>
+          <li>SPL</li>
+          <li>Keynote</li>
+          <li>Breakout</li>
+          <li>Executive</li>
+          <li>Architect</li>
+          <li>Developer</li>
+          <li>Application Development</li>
+          <li>Big Data & Machine Learning</li>
+          <li>Collaboration & Productivity</li>
+          <li>Connected Business Platform</li>
+          <li>Infrastructure & Operations</li>
+          <li>Mobility & Devices</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Examples</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td style="vertical-align:top;">
+        Global Search
+        <ul>
+          <li>security</li>
+          <li>NOT keynote</li>
+          <li>kubernetes OR container</li>
+          <li>kubernetes container</li>
+        </ul>
+      </td>
+      <td style="vertical-align:top;">
+        Field Search
+        <ul>
+          <li>event:solution AND description:serverless</li>
+          <li>event:next2016 duration_min &gt; 45</li>
+          <li>title:"G Suite" AND event:next2018</li>
+          <li>video_id:VxMA2FIN8RE</li>
+          <li>speakers:jeff</li>
+          <li>description:security and NOT title:"G Suite"</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+Try a <a href="/videosearches" target="_blank">
+  few example video searches here
+</a>
+and some <a href="/learningsearches" target="_blank">
+  example learning searches here.
+</a>
+</p>
+
+<hr>
+
+<h2>References</h2>
+<ul>
+  <li>
+    <a href="https://cloud.google.com/appengine/docs/standard/python/search/query_strings">
+      Query Strings within searchable document indexes
+    </a>
+  </li>
+</ul>
+
+{% endblock %}

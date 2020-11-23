@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Information for {{ title }}</title>
+{% endblock %}
+
+{% block base_subtitle %}
+<br>
+{% endblock %}
+
+{% block content %}
+
+      <h2>{{ title }}</h2>
+
+      <!-- For expository purposes, all document fields are listed below with their actual names; -->
+      <!-- a real customer-facing app would expose this information differently. -->
+
+      <p><br/>
+
+      <table>
+        <tbody>
+          <tr>
+            {% if not vid and image %}
+              <td>session</td>
+              <td>
+                <img src="{{ image }}" alt="{{ category }}"
+                    style="width:120px;height:76px;">
+                </img>
+              </td>
+            {% else %}
+              <td style="text-align:center;"><b>video</b></td>
+              <td style="width:560px;">
+                <iframe width="560px" height="315px"
+                        src="https://www.youtube.com/embed/{{ vid }}"
+                        frameborder="0" allowfullscreen>
+                </iframe>
+                <br>
+                <button class="mdl-button mdl-js-button"
+                  onclick="trackOutboundLink('video', '{{ title|e }}', 'https://youtu.be/{{ vid }}'); return false;">
+                  Open video full-size
+                </button>
+              </td>
+            {% endif %}
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+      {% for field in prod_doc.fields %}
+          <tr>
+          {% if field.name == "subtitle" and field.value %}
+            <td style="text-align:center;"><b>subtitle</b></td>
+            <td>{{ field.value }}</td>
+          {% endif %}
+          {% if field.name == "duration_min" %}
+            <td style="text-align:center;"><b>duration (min)</b></td>
+            <td>{{ field.value|int }}</td>
+          {% endif %}
+          {% if field.name == "views" %}
+            <td style="text-align:center;"><b>views</b></td>
+            <td>{{ field.value|int }}</td>
+          {% endif %}
+          {% if field.name == "event" %}
+            <td style="text-align:center;"><b>event</b></td>
+            <td valign="middle">
+            {% if field.value == 'next2016' %}
+              <img src="/static/next2016logo.png" alt="{{ field.value }}"
+                   style="width:100px;height:30px;">
+            {% elif field.value == 'next2017' %}
+              <img src="/static/next2017logo.svg" alt="{{ field.value }}"
+                   style="width:60px;height:30px;">
+            {% elif field.value == 'next2018' %}
+              <img src="/static/next2018logo.png" alt="{{ field.value }}"
+                   style="width:60px;height:40px;">
+            {% else %}
+              {{ field.value }}&nbsp;-&nbsp;
+            {% endif %}
+            </td>
+          {% endif %}
+          {% if field.name == "description" %}
+            <td style="text-align:center;"><b>description</b></td>
+            <td>{{ field.value }}</td>
+          {% endif %}
+          {% if field.name == "speakers" and field.value %}
+            <td style="text-align:center;"><b>speakers</b></td>
+            <td>
+              <ul>
+              {% for s in field.value.split(';') %}
+                {% if s %}
+                <li>{{ s|safe }}</li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            </td>
+          {% endif %}
+          {% if field.name == "published_date" %}
+            <td style="text-align:center;"><b>delivery date</b></td>
+            <td>{{ field.value }}</td>
+          {% endif %}
+          {% if field.name == "slides_link" and user_is_googler and field.value and category != 'next2019' and category != 'next2020' %}
+            <td style="text-align:center;"><b>slides</b></td>
+            <td>
+              <a href="{{ field.value }}" target="_blank"
+                 onclick="trackOutboundLink('', '{{ title }}', '{{ field.value }}'); return false;"
+                 oncontextmenu="return false;">
+                <img src="/static/slides-icon.png" alt="slides link"
+                     style="width:40px;height:40px;">
+              </a>
+            </td>
+          {% endif %}
+          </tr>
+      {% endfor %}
+        </tbody>
+      </table>
+
+      <hr>
+
+{#
+
+      <br/><a href="{{review_link}}">Reviews for {{ title }}</a>
+      </p>
+
+
+    <h4>Create a Review for {{ title }}</h4>
+
+    <form action="/create_review" method="post">
+       <input type="hidden" name="pid" value="{{pid}}" />
+       <input type="hidden" name="category" value="{{category}}" />
+       <input type="hidden" name="vname" value="{{ vname }}" />
+       <div class="clearfix">
+        <label for="comment">review comment:</label>
+        <div class="input">
+         <textarea name="comment" rows="3" cols="80">{{comment}}</textarea>
+        </div>
+       </div>
+
+       <div class="clearfix">
+        <label for="rating">rating (1-5):</label>
+        <div class="input">
+         <input type="text" id="rating" name="rating" value="{{rating}}"/>
+        </div>
+       </div>
+
+      <div class="actions">
+       <input class="btn primary" id="subreview" name="subreview" type="submit" value="Review"/>
+       <input type="reset" class="btn primary"  name="reviewreset" value="Clear"/>
+      </div>
+    </form>
+
+  {% if user_is_admin %}
+  <p>Delete this video and its reviews; no undo (admin).</p>
+  <form action="/admin/delete_video" method="post">
+    <input type="hidden" name="pid" value="{{pid}}" />
+    <div class="actions">
+     <input class="btn primary" id="delete_prod" name="delete_prod" type="submit" value="Delete Video"/>
+    </div>
+  </form>
+  {% endif %}
+
+#}
+
+{% endblock %}

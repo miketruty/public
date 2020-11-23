@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>{% block title %}{% endblock %}</title>
+{% endblock %}
+
+
+{% block content %}
+
+<h3>{% block title2 %}{% endblock %}</h3>
+
+<table>
+  <tr>
+    <td style="vertical-align:top;">
+      <ul>
+        {% for s in searches %}
+        <li>
+          <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </td>
+    <td style="vertical-align:top;">
+      <ul>
+        <li>
+          <a href="/search_hints" target="_blank">
+            Search hints
+          </a>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+
+{% endblock %}
