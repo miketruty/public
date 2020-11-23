@@ -1,0 +1,143 @@
+# https://github.com/CloudVLab/qwiklabs-content-bundle-spec/blob/master/quiz-bundle-spec.md
+
+$schema: http://json-schema.org/draft-07/schema#
+
+type: object
+additionalProperties: false
+required:
+- entity_type
+- schema_version
+- default_locale
+- passing_percentage
+- items
+properties:
+  entity_type:
+    type: string
+    const: Quiz
+  schema_version:
+    type: integer
+    const: 1
+  default_locale:
+    $ref: common.json#/definitions/locale
+  title:
+    $ref: common.json#/definitions/localized_string
+  passing_percentage:
+    type: integer
+    minimum: 0
+    maximum: 100
+  items:
+    type: array
+    items:
+      type: object
+      # TODO(b/137681593): additionalProperties: false
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - multiple-choice
+          - multiple-select
+          - true-false
+          - match
+        stem:
+          $ref: common.json#/definitions/localized_string
+        lead_in:
+          $ref: common.json#/definitions/localized_string
+      allOf:
+      - if:
+          properties:
+            type:
+              enum:
+              - multiple-choice
+              - multiple-select
+              - true-false
+        then:
+          required:
+          - stem
+      - if:
+          properties:
+            type:
+              enum:
+              - multiple-choice
+              - multiple-select
+              - match
+        then:
+          required:
+          - options
+          properties:
+            options:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                required:
+                - id
+                - title
+                properties:
+                  id:
+                    type: string
+                  title:
+                    $ref: common.json#/definitions/localized_string
+                  rationale:
+                    $ref: common.json#/definitions/localized_string
+                  is_answer:
+                    type: boolean
+      - if:
+          properties:
+            type:
+              enum:
+              - multiple-choice
+              - multiple-select
+        then:
+          properties:
+            options:
+              items:
+                required:
+                - rationale
+                - is_answer
+      - if:
+          properties:
+            type:
+              enum:
+              - match
+        then:
+          required:
+          - lead_in
+          - stems
+          properties:
+            lead_in:
+              $ref: common.json#/definitions/localized_string
+            stems:
+              type: array
+              items:
+                type: object
+                required:
+                - title
+                - answer
+                properties:
+                  id:
+                    type: string
+                  title:
+                    $ref: common.json#/definitions/localized_string
+                  answer:
+                    type: string
+      - if:
+          properties:
+            type:
+              const: true-false
+        then:
+          required:
+          - answer
+          - true_rationale
+          - false_rationale
+          properties:
+            answer:
+              type: boolean
+            true_rationale:
+              $ref: common.json#/definitions/localized_string
+            false_rationale:
+              $ref: common.json#/definitions/localized_string

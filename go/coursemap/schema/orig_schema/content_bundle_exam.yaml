@@ -1,0 +1,161 @@
+# https://github.com/CloudVLab/qwiklabs-content-bundle-spec/blob/master/exam-bundle-spec.md
+
+$schema: http://json-schema.org/draft-07/schema#
+
+definitions:
+  item:
+    type: object
+    # TODO(b/137681593): additionalProperties: false
+    required:
+    - id
+    - type
+    - seed
+    - options
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+        enum:
+        - multiple-choice
+        - multiple-select
+        - match
+      stem:
+        $ref: common.json#/definitions/localized_string
+      lead_in:
+        $ref: common.json#/definitions/localized_string
+      seed:
+        type: boolean
+      code:
+        type: string
+      options:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required:
+          - id
+          - title
+          properties:
+            id:
+              type: string
+            title:
+              $ref: common.json#/definitions/localized_string
+            rationale:
+              $ref: common.json#/definitions/localized_string
+            is_answer:
+              type: boolean
+    allOf:
+    - if:
+        properties:
+          type:
+            enum:
+            - multiple-choice
+            - multiple-select
+      then:
+        required:
+        - stem
+        properties:
+          options:
+            items:
+              required:
+              - is_answer
+    - if:
+        properties:
+          type:
+            enum:
+            - match
+      then:
+        required:
+        - lead_in
+        - stems
+        properties:
+          stems:
+            type: array
+            items:
+              type: object
+              required:
+              - title
+              - answer
+              properties:
+                id:
+                  type: string
+                title:
+                  $ref: common.json#/definitions/localized_string
+                answer:
+                  type: string
+
+type: object
+additionalProperties: false
+required:
+- entity_type
+- schema_version
+- default_locale
+- passing_percentage
+- duration
+- randomize_items
+- randomize_options
+- randomize_prompts
+- retake_cooldown
+- forms
+properties:
+  entity_type:
+    type: string
+    const: Exam
+  schema_version:
+    type: integer
+    const: 1
+  default_locale:
+    $ref: common.json#/definitions/locale
+  title:
+    $ref: common.json#/definitions/localized_string
+  passing_percentage:
+    type: integer
+    minimum: 0
+    maximum: 100
+  duration:
+    type: integer
+    minimum: 0
+  randomize_items:
+    type: boolean
+  randomize_options:
+    type: boolean
+  randomize_prompts:
+    type: boolean
+  retake_cooldown:
+    type: array
+    items:
+      type: integer
+      minimum: 0
+  forms:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - sections
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sections:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+            - id
+            - name
+            - items
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              items:
+                type: array
+                items:
+                  $ref: "#/definitions/item"
