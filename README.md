@@ -1,2 +1,2 @@
 # public
-Some of my projects
+A few of my projects in Go and Python.
