@@ -1,0 +1,94 @@
+# Common types.
+
+$schema: http://json-schema.org/draft-07/schema#
+
+definitions:
+  # The code for a locale, e.g., "en" or "pt_BR".
+  locale:
+    type: string
+    pattern: "^[a-z]{2}(_[A-Z]{2})?$"
+
+  localized_string:
+    type: string
+
+  localized_uri:
+    type: object
+    additionalProperties: false
+    required:
+    - locales
+    properties:
+      locales:
+        type: object
+        propertyNames:
+          $ref: "#/definitions/locale"
+        additionalProperties:
+          type: string
+          format: uri
+
+  # Path to a file or directory within a content bundle.
+  file_path:
+    # TODO(dseomn): Should this be constrained at all? E.g., with a regex?
+    type: string
+
+  # https://github.com/CloudVLab/qwiklabs-content-bundle-spec/blob/master/resource-spec.md
+  non_lab_resource:
+    type: object
+    # TODO(b/137681593): additionalProperties: false
+    required:
+    - type
+    - title
+    properties:
+      type:
+        type: string
+        enum:
+        - file
+        - link
+        - video
+      id:
+        type: string
+      title:
+        $ref: "#/definitions/localized_string"
+      description:
+        $ref: "#/definitions/localized_string"
+      uri:
+        $ref: "#/definitions/localized_uri"
+    allOf:
+    - if:
+        properties:
+          type:
+            const: video
+    - then:
+        required:
+        - video_id
+        - video_provider
+        - duration
+        properties:
+          video_id:
+            $ref: "#/definitions/localized_string"
+          video_provider:
+            type: string
+          duration:
+            type: integer
+            minimum: 0
+  lab_resource:
+    type: object
+    additionalProperties: false
+    required:
+    - type
+    - title
+    - uri  # note that labs do NOT use video_* fields, they only have uri
+    properties:
+      type:
+        type: string
+        enum:
+        - file
+        - link
+        - video
+      id:
+        type: string
+      title:
+        $ref: "#/definitions/localized_string"
+      description:
+        $ref: "#/definitions/localized_string"
+      uri:
+        $ref: "#/definitions/localized_uri"

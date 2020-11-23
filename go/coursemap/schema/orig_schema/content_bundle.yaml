@@ -1,0 +1,59 @@
+# Top-level schema for qwiklabs.yaml in a content bundle.
+
+$schema: http://json-schema.org/draft-07/schema#
+
+type: object
+required:
+- entity_type
+properties:
+  entity_type:
+    type: string
+    enum:
+    - Certification
+    - ClassroomTemplate
+    - CourseTemplate
+    - Exam
+    - GameTemplate
+    - Lab
+    - LearningPath
+    - Quiz
+allOf:
+- if:
+    properties:
+      entity_type:
+        enum:
+        - CourseTemplate
+        - GameTemplate
+        - LearningPath
+  then:
+    $ref: content_bundle_course_template.json
+- if:
+    properties:
+      entity_type:
+        const: Lab
+  then:
+    $ref: content_bundle_lab.json
+- if:
+    properties:
+      entity_type:
+        const: Quiz
+  then:
+    $ref: content_bundle_quiz.json
+- if:
+    properties:
+      entity_type:
+        const: ClassroomTemplate
+  then:
+    $ref: content_bundle_classroom_template.json
+- if:
+    properties:
+      entity_type:
+        const: Exam
+  then:
+    $ref: content_bundle_exam.json
+- if:
+    properties:
+      entity_type:
+        const: Certification
+  then:
+    $ref: content_bundle_certification.json

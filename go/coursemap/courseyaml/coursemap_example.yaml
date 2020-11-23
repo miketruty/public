@@ -1,0 +1,50 @@
+---
+entity_type: CourseTemplate
+schema_version: 1
+default_locale: en
+badge: images/gcp.png
+title: Provide the Course Title Here
+description: Provide a good course description here. Both title and 
+  description should match the datasheet and what's in go/drinkelixir
+  See go/ql-course-yaml for more information, this is a starter template
+objectives: |-
+  <ul>
+    <li>1st learning objective</li>
+    <li>2nd learning objective</li>
+    <li>3rd learning objective</li>
+    <li>You get the idea</li>
+  </ul>
+resources:
+- type: file
+  id: file-module-1 #provide a unique resource name, for a file prepend with file-
+  title: Module 1:Intro-to-containers-and-Docker #learner visible title for the resource (file)
+  drive_uri: https://drive.google.com/file/d/<FILE_ID> #provide drive uri in this format
+- type: video
+  id: video-module-00-promo-1 #provide a unique resource name, for a video prepend with video-
+  title: Welcome to the Course Promo #learner visible title for the resource (video)
+  drive_uri: https://drive.google.com/file/d/<FILE_ID> #provide drive uri in this format
+modules: #list modules in this section
+- id: getting-started-with-my-sample-course #provide a unique module identifier 
+  title: Welcome to Getting Started with Google Kubernetes Engine #learner visible module title
+  description: Welcome to the course #learner visible description
+  objectives: |-
+    <ul>
+      <li>1st learning objective</li>
+      <li>2nd learning objective</li>
+      <li>3rd learning objective</li>
+      <li>You get the idea</li>
+    </ul>
+  steps:
+  - id: step-1
+    activity_options:
+    - type: resource
+      id: file-module-1 #reference the id you used for the resource in the resources section
+  - id: step-2
+    activity_options:
+    - type: resource
+      id: video-module-00-intro-promo-1 #reference the id you used the for the resource in the resources section
+  - id: step-3
+    activity_options:
+    - type: quiz
+      title: 'Quiz: Introduction to Containers and Docker' #learner visible quiz title
+      drive_uri: https://drive.google.com/file/d/<FILE_ID> #provide drive uri in this format (this is a yaml downloaded from coursera)

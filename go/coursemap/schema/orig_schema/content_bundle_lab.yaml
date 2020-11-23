@@ -1,0 +1,165 @@
+# https://github.com/CloudVLab/qwiklabs-content-bundle-spec/blob/master/lab-bundle-spec.md
+
+$schema: http://json-schema.org/draft-07/schema#
+
+definitions:
+  instruction:
+    type: object
+    additionalProperties: false
+    required:
+    - type
+    - locales
+    properties:
+      type:
+        type: string
+        enum:
+        - html
+        - markdown
+        - pdf
+      locales:
+        type: object
+        propertyNames:
+          $ref: common.json#/definitions/locale
+        additionalProperties:
+          $ref: common.json#/definitions/file_path
+
+  environment_resource:
+    type: object
+    # TODO(b/137681593): additionalProperties: false
+    required:
+    - type
+    properties:
+      type:
+        type: string
+        enum:
+        - gcp_project
+        - gcp_project_and_user
+        - gcp_user
+        - gsuite_domain
+        - jupyter
+        - jupyter_notebook
+      id:
+        type: string
+    allOf:
+    - if:
+        properties:
+          type:
+            const: gcp_project
+      then:
+        properties:
+          # legacy way of specifying dm script. points to a .zip file
+          dm_script:
+            $ref: common.json#/definitions/file_path
+          dm_template:
+            type: object
+            additionalProperties: false
+            properties:
+              # new way of specifying dm script. points to a directory.
+              script:
+                $ref: common.json#/definitions/file_path
+              custom_properties:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                  - key
+                  - value
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+          fleet:
+            type: string
+    - if:
+        properties:
+          type:
+            const: gcp_user
+      then:
+        properties:
+          permissions:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              required:
+              - project
+              - roles
+              properties:
+                project:
+                  type: string
+                roles:
+                  type: array
+                  items:
+                    type: string
+
+type: object
+additionalProperties: false
+required:
+- entity_type
+- schema_version
+- default_locale
+- title
+- description
+- duration
+properties:
+  entity_type:
+    type: string
+    const: Lab
+  schema_version:
+    type: integer
+    const: 1
+  default_locale:
+    $ref: common.json#/definitions/locale
+  title:
+    $ref: common.json#/definitions/localized_string
+  description:
+    $ref: common.json#/definitions/localized_string
+  duration:
+    type: integer
+    minimum: 0
+  max_duration:
+    type: integer
+    minimum: 0
+  credits:
+    type: integer
+    minimum: 0
+  level:
+    type: string
+  logo:
+    $ref: common.json#/definitions/file_path
+  tags:
+    type: array
+    items:
+      type: string
+  tagline:
+    type: string
+  lab_test_script:
+    $ref: common.json#/definitions/file_path
+  legacy_display_options:
+    type: array
+    items:
+      type: string
+      enum:
+      - hide_connection_fleetconsole
+      - show_connection_ssh
+      - show_connection_vnc
+      - show_connection_rdp
+      - show_connection_custom
+      - show_connection_access_key_id
+      - allow_immediate_entry
+  instruction:
+    $ref: "#/definitions/instruction"
+  resources:
+    type: array
+    items:
+      $ref: common.json#/definitions/lab_resource
+  environment_resources:
+    type: array
+    items:
+      $ref: "#/definitions/environment_resource"
+  activity_tracking:
+    $ref: common.json#/definitions/file_path
+  assessment:
+    $ref: common.json#/definitions/file_path
