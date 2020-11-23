@@ -1,0 +1,83 @@
+# https://github.com/CloudVLab/qwiklabs-content-bundle-spec/blob/master/certification-bundle-spec.md
+
+$schema: http://json-schema.org/draft-07/schema#
+
+definitions:
+  step:
+    type: object
+    additionalProperties: false
+    required:
+    - id
+    - type
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+        enum:
+        - course_template
+        - exam
+      gated:
+        type: boolean
+      proctor:
+        type: string
+        enum:
+        - qwiklabs-live-plus
+        - qwiklabs-record-plus
+    if:
+      properties:
+        type:
+          not:
+            const: exam
+    then:
+      not:
+        required:
+        - proctor
+type: object
+additionalProperties: false
+required:
+- entity_type
+- schema_version
+- default_locale
+- steps
+properties:
+  entity_type:
+    type: string
+    const: Certification
+  schema_version:
+    type: integer
+    const: 1
+  default_locale:
+    "$ref": common.json#/definitions/locale
+  title:
+    "$ref": common.json#/definitions/localized_string
+  description:
+    "$ref": common.json#/definitions/localized_string
+  objectives:
+    "$ref": common.json#/definitions/localized_string
+  audience:
+    "$ref": common.json#/definitions/localized_string
+  prerequisites:
+    "$ref": common.json#/definitions/localized_string
+  tags:
+    type: array
+    items:
+      type: string
+  product_tags:
+    type: array
+    items:
+      type: string
+  role_tags:
+    type: array
+    items:
+      type: string
+  domain_tags:
+    type: array
+    items:
+      type: string
+  credits:
+    type: integer
+  steps:
+    type: array
+    items:
+      "$ref": "#/definitions/step"

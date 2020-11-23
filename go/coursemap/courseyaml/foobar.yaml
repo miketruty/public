@@ -1,0 +1,10 @@
+---
+entity_type: CourseTemplate
+schema_version: 1
+default_locale: en
+badge: images/gcp.png
+title: Provide the Course Title Here
+foo: 1
+bar:
+  - one
+  - two
