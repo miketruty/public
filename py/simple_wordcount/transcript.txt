@@ -1,0 +1,306 @@
+00:00
+[Music]
+00:06
+welcome back to the next live show I'm
+00:08
+here with Dave ransom Google sre
+00:11
+director thanks for joining us that flew
+00:13
+Trevor Murdoch
+00:13
+now you've written a few books on the
+00:15
+cloud now the old latest is an O'Reilly
+00:18
+publication of the site reliability
+00:20
+workbook yep beautiful time it's a
+00:24
+collaborative effort this time right who
+00:26
+is it mental anyone doing Production
+00:28
+Engineering in the modern age we all
+00:32
+want our little things to grow to be
+00:33
+very large and what happens when they do
+00:36
+and how do we make that happen to work
+00:37
+this book is the work of 150 plus
+00:40
+Googlers plus 25 or 30 people from
+00:44
+outside of Google big you know New York
+00:46
+Times and Netflix and all sorts
+00:48
+wonderful companies Wendy plastic yeah
+00:50
+now as you said it wasn't just Google
+00:53
+Lucy you know you mentioned a few
+00:54
+companies what made you bring all of
+00:56
+these people all these new authors from
+00:58
+other places on board well you know the
+01:00
+big thing is two years ago when we
+01:01
+publish the first seseri book they
+01:03
+weren't on investor visa outside of
+01:04
+Google there was some but not a ton it's
+01:07
+spreading very far and wide now and
+01:09
+there are a lot of other companies have
+01:11
+a lot a really useful stuff to teach the
+01:14
+world about how to sre if you will and
+01:16
+we thought like no implementation book
+01:18
+is going to be complete if we don't
+01:19
+include those voices and we're really
+01:21
+glad we we did that some of this content
+01:23
+is is really pretty special that's
+01:25
+fantastic now you know you mentioned
+01:27
+sort of Google and these other big
+01:28
+companies now I would think that being
+01:30
+an SRE in a that in a place like Google
+01:32
+where you've got thousands of sre
+01:35
+specialists is gonna be pretty different
+01:36
+from a company of like you know 30
+01:38
+people total well you know this is a
+01:41
+common kind of a question I think the
+01:43
+important thing is to separate the
+01:45
+principles of SRA on the from the
+01:47
+practice eviscerated the principles of
+01:50
+sre here our budgets Nestle is an SLS
+01:51
+they apply at any scale to people three
+01:54
+who will 30 people 3,000 people that's
+01:56
+not a problem the practices are going to
+01:58
+change and evolve as you grow larger as
+02:00
+you would expect to have happen they
+02:02
+have here you know we started s3 15 ish
+02:04
+years ago here at Google we weren't
+02:06
+2,500 sres we were like three
+02:09
+absolutely now it's a it's a it's a
+02:12
+pretty it's a pretty hefty tone you've
+02:14
+got here is arrested for a lot of people
+02:16
+involved if a CTO ask you what's the one
+02:20
+chapter I should read how can I get the
+02:22
+most out of this what's what's the
+02:24
+chapter you'd suggest in any way well
+02:26
+everyone in the editorial team has their
+02:28
+favorite my personal favorite is a
+02:30
+chapter called now ste non-abstract
+02:32
+large systems design it really walks
+02:34
+through how as sres we want you and
+02:37
+expect you to think about how to
+02:39
+construct a large distributed system
+02:41
+it's it's it's an incredibly useful
+02:44
+skill that anyone can learn and a kind
+02:47
+of technique that not a lot of people
+02:49
+sort of intuitively apply and we expect
+02:51
+every s3 to be able to do it and so that
+02:54
+was very hard but a lot of fun and very
+02:56
+fulfilling the right fantastic it sounds
+02:58
+like a really good way to sort of find
+03:00
+out something you no matter what your
+03:02
+experience is gonna be a new experience
+03:04
+for a lot of folks fantastic now this is
+03:08
+book two you've got you know your only
+03:09
+way to a true trilogy if not more what
+03:12
+what do you have in store first welcome
+03:13
+to look for doing wow we just launched
+03:17
+this one and it was a lot of work with a
+03:19
+lot of people I will there be a third
+03:22
+book I imagine they're probably well
+03:23
+actually I hope they'll be a lot of them
+03:25
+and I hope they'll come from a lot of
+03:26
+different places
+03:27
+what will it be me know I don't know
+03:28
+it's once when the memory of this effort
+03:31
+has worn off just a little all right
+03:33
+will hold you to that we're gonna check
+03:34
+it back in now last question I want to
+03:37
+know is how do you think that the move
+03:39
+to cloud has really shaped this book
+03:41
+well I mean the fact of the matter is is
+03:45
+before Google did cloud we ran our
+03:48
+infrastructure for ourselves and so in a
+03:51
+way we could kind of have shortcuts
+03:52
+because we could prescribe to our
+03:53
+developers do it this way do it that way
+03:55
+do some other way when you're giving
+03:57
+your infrastructure to other people
+03:58
+you've got a lot less control over how
+04:00
+they use it right absolutely and also
+04:02
+the reliability the experience becomes a
+04:05
+partnership it's a combination of the
+04:06
+decisions they make and the decisions we
+04:09
+make running the infrastructure and that
+04:11
+was really the impetus for both books is
+04:13
+we can't expect them to have a good
+04:15
+experience you know if we haven't
+04:17
+tried to help them think through how
+04:18
+they're gonna do it it makes a lot of
+04:20
+sense so obviously the question everyone
+04:22
+wants to know is how can they get a copy
+04:24
+of this book well okay if you're here at
+04:26
+the show there are 20,000 attendees we
+04:30
+have 5,000 books here at the show come
+04:32
+by the v nine here in Moscone West from
+04:35
+the second floor we'll give you a book
+04:37
+in and we'll sign it before you all the
+04:38
+editors and most of the authors are here
+04:40
+too so if you're the first sort of 25
+04:42
+percent if you're not in those first
+04:44
+5,000 people or you're not here at the
+04:46
+show for the next 30 days you can go to
+04:48
+google.com /sr e and you can actually
+04:52
+download this book for free for the next
+04:55
+30 days and of course you can read the
+04:56
+original there as well Oh fantastic
+04:58
+yeah freeze it's a hot price everyone's
+05:00
+favorite price absolutely alright thank
+05:02
+you so much for joining us my pleasure
+05:04
+excellent now if you are here in person
+05:06
+and you want to grab your own copy of
+05:08
+this wonderful book come over to the
+05:10
+fifth now 59 lounge as it says behind us
+05:13
+located here on level two of Moscone
+05:16
+West the 59 lounge is a dedicated space
+05:19
+where Google sre customers DevOps people
+05:23
+ops and teams can mingle meet and
+05:24
+exchange ideas and listen to s re
+05:27
+focused fireside chats and panel
+05:28
+discussions
+05:36
+you
+05:37
+[Music]
