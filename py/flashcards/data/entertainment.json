@@ -1,0 +1,32 @@
+{
+  "exam": [
+    {
+      "q": "Theater box office annual revenue (b)?",
+      "a": "50b"
+    },
+    {
+      "q": "Home entertainment box office annual revenue (b)?",
+      "a": "50b"
+    },
+    {
+      "q": "Gaming entertainment annual revenue (b)?",
+      "a": "150b"
+    },
+    {
+      "q": "APAC Gaming entertainment annual revenue (b)?",
+      "a": "72b"
+    },
+    {
+      "q": "North America Gaming entertainment annual revenue (b)?",
+      "a": "40b"
+    },
+    {
+      "q": "EMEA Gaming entertainment annual revenue (b)?",
+      "a": "35b"
+    },
+    {
+      "q": "LatAm Gaming entertainment annual revenue (b)?",
+      "a": "5.6b"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "exam": [
+    {
+      "q": "Population of world?",
+      "a": "7.8b"
+    },
+    {
+      "q": "Population of continent: Asia (#1)?",
+      "a": "4.6b"
+    },
+    {
+      "q": "Population of continent: Africa (#2)?",
+      "a": "4.6b"
+    },
+    {
+      "q": "Population of continent: Europe (#3)?",
+      "a": "4.6b"
+    },
+    {
+      "q": "Population of continent: South America (#4)?",
+      "a": "4.6b"
+    },
+    {
+      "q": "Population of continent: North America (#5)?",
+      "a": "4.6b"
+    },
+    {
+      "q": "Population of continent: Oceania (#6)?",
+      "a": "4.6b"
+    },
+    {
+      "q": "Population of continent: Antarctica (#7)?",
+      "a": "0"
+    },
+    {
+      "q": "Population of China (#1)?",
+      "a": "1.4b"
+    },
+    {
+      "q": "Population of India (#2)?",
+      "a": "1.4b"
+    },
+    {
+      "q": "Population of United States (#3)?",
+      "a": "330m"
+    },
+    {
+      "q": "Population of Indonesia (#4)?",
+      "a": "270m"
+    },
+    {
+      "q": "Population of Pakistan (#5)?",
+      "a": "220m"
+    },
+    {
+      "q": "Population of Brazil (#6)?",
+      "a": "212m"
+    },
+    {
+      "q": "Population of Nigeria (#7)?",
+      "a": "206m"
+    },
+    {
+      "q": "Population of Bangladesh (#8)?",
+      "a": "165m"
+    },
+    {
+      "q": "Population of Russia (#9)?",
+      "a": "145m"
+    },
+    {
+      "q": "Population of Mexico (#10)?",
+      "a": "130m"
+    },
+    {
+      "q": "Population of Japan (#11)?",
+      "a": "126m"
+    },
+    {
+      "q": "Population of Ethiopia (#12)?",
+      "a": "115m"
+    },
+    {
+      "q": "Population of Philippines (#13)?",
+      "a": "110m"
+    },
+    {
+      "q": "Population of Egypt (#14)?",
+      "a": "102m"
+    },
+    {
+      "q": "Population of Vietnam (#15)?",
+      "a": "98m"
+    }
+  ]
+}
