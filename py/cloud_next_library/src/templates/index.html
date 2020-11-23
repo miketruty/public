@@ -1,0 +1,641 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {# INFO box.
+  <table>
+    <tr>
+      <td bgcolor="#FFFFE6">
+        Slide and video links to Next '18 talks have not been finalized.
+        The <a href="GoogleCloudNext-Speakers@google.com" target="_blank">
+        Next '18 speakers team</a> is completing final updates.
+      </td>
+    </tr>
+  </table>
+  #}
+
+  <form name="searchform" action="/vsearch" method="post">
+    <input type="hidden" name="qtype" value="event"/>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input class="mdl-textfield__input" type="text" id="query" name="query"
+             value="{{ base_pquery }}" style="width:300px;">
+      <label class="mdl-textfield__label" for="query">
+        Search Criteria
+      </label>
+    </div>
+
+    {# Material colors:
+       https://material.io/design/color/#tools-for-picking-colors #}
+    <button type="submit" name="vsearchsub" id="vsearchsubfield"
+            class="mdl-button mdl-js-button mdl-button--raised
+                   mdl-js-ripple-effect
+                   mdl-color--indigo-500
+                   mdl-color-text--white">
+        Search
+    </button>
+    <div class="mdl-tooltip" data-mdl-for="vsearchsubfield">
+      ☰ > Search Hints for help with search criteria syntax
+    </div>
+
+    {#
+    <input type="reset" class="btn primary"  name="vsearchreset" value="Clear"/>
+    #}
+
+    &nbsp;&nbsp;
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+         style="width:120px;">
+      <select class="mdl-textfield__input" id="category" name="category">
+        {% if not category_name %}
+          <option value="anyevent" selected="selected">Any Event</option>
+        {% else %}
+          <option value="anyevent">Any Event</option>
+        {% endif %}
+        {% for cat in cat_info %}
+          {% if cat.0 == category_name %}
+            <option value="{{ cat.0 }}" selected="selected">
+              {{ cat.1 }}
+            </option>
+          {% else %}
+           <option value="{{ cat.0 }}">
+             {{ cat.1 }}
+           </option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <label class="mdl-textfield__label" for="category">Event</label>
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+         style="width:130px;">
+      <select class="mdl-textfield__input" id="sort" name="sort">
+      {% for sort in sort_info %}
+        {% if not sort_order %}
+          <option value="{{ sort.0 }}" selected="selected">
+            {{ sort.1 }}
+          </option>
+        {% elif sort.0 == sort_order %}
+          <option value="{{ sort.0 }}" selected="selected">
+            {{ sort.1 }}
+          </option>
+        {% else %}
+         <option value="{{ sort.0 }}">
+           {{ sort.1 }}
+         </option>
+        {% endif %}
+      {% endfor %}
+      </select>
+      <label class="mdl-textfield__label" for="sort">Sort by</label>
+    </div>
+    {% if search_response and category_name != 'solution' %}
+      {% if current_user %}
+        {% if category_name != "learning" %}
+        <button type="button" name="playlistsub" id="create_button"
+                class="mdl-button mdl-js-button
+                       mdl-button--raised mdl-js-ripple-effect
+                        mdl-color--red-A400 mdl-color-text--white">
+            YouTube Playlist
+        </button>
+        <dialog class="mdl-dialog" id="create_dialog">
+          <h4 class="mdl-dialog__title">Create Playlist?</h4>
+          <div class="mdl-dialog__content">
+            <p>
+              Create YouTube playlist from these search results?<br>
+              You can then download all videos in the playlist.<br>
+              --Takes 30-60s for large playlists--
+            </p>
+          </div>
+          <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button create">Create</button>
+            <button type="button" class="mdl-button close">Cancel</button>
+          </div>
+        </dialog>
+
+        <input type="hidden" id="playlistfield" name="create_playlist"
+               value="">
+        <div class="mdl-tooltip" data-mdl-for="create_button">
+          Create YouTube Playlist from search results.
+        </div>
+        {% endif %}
+      {% else %}
+        (Login to create YouTube playlists from search results.)
+      {% endif %}
+    {% endif %}
+
+    <br>
+
+    {#
+    <a target="_blank"
+       href="https://goto.google.com/next19-session-recommendations">
+      *New: Review Next '19 Sessions Here!
+    </a>
+    #}
+
+    <p>
+    {% if prev_link or next_link %}
+      {% if prev_link %}
+        <a href="{{ prev_link }}">Previous Results</a>
+      {% else %}
+        Previous Results
+      {% endif %}
+       |
+      {% if next_link %}
+        <a href="{{ next_link }}">Next Results</a>
+      {% else %}
+        Next Results
+      {% endif %}
+    {% endif %}
+    {% if search_response and returned_count > 0 and category_name == 'learning' %}
+    <span style="font-size: 10px; color: rgb(26, 115, 232);">
+      &nbsp;&nbsp;
+      <i>
+        There are 111 qlCourse, 739 qlModule, 70 qlQuest, 547 SPL, and 579 lab
+        entries to search from.
+      </i>
+    </span>
+    {% endif %}
+    </p>
+
+  </form>
+
+  {% if search_response %}
+  <div>
+    {% if returned_count > 0 %}
+     {{ first_res }} - {{ last_res }} of {{ number_found }}
+     {% if category_name == 'learning' %}
+       {% if "qlcourse" in print_query.lower() %}
+       Courses
+       {% elif "qlmodule" in print_query.lower() %}
+       Modules
+       {% elif "qlquest" in print_query.lower() %}
+       Quests
+       {% elif "qllab" in print_query.lower() %}
+       Labs
+       {% else %}
+       results
+       {% endif %}
+     {% else %}
+       {{ qtype }}s
+     {% endif %}
+     shown for query: <i>{{ print_query }}</i>.
+     &nbsp;&nbsp;&nbsp;&nbsp;
+     <small>
+     <a href="http://goto/cloud-next-library-thumbsup" target="_blank">
+       Find this useful? Leave a rating!
+     </a>
+     </small>
+    {% endif %}
+
+    <table style="width:100%;">
+    {% for result in search_response %}
+      <tr>
+        {% if result.cat == 'learning' %}
+        <td></td>
+        {% else %}
+        <td style="width:240px; vertical-align:top;">
+          {% if result.cat == 'solution' or result.cat == 'accelerate2017' %}
+            <a href="{{ result.slides_link }}"
+               onclick="trackOutboundLink('{{ result.cat }}', '{{ result.title|tojssafearg }}', '{{ result.slides_link }}'); return false;"
+               oncontextmenu="return false;">
+            {% if result.image %}
+            <img src="{{ result.image }}" alt="solution"
+            {% else %}
+            <img src="/static/logo_google_cloud.svg" alt="solution"
+            {% endif %}
+                style="width:240px;height:150px;">
+            </img>
+          {% elif not result.vid %}
+            {% if result.image %}
+            <img src="{{ result.image }}" alt="{{ result.cat }}"
+            {% else %}
+            <img src="/static/logo_google_cloud.svg" alt="solution"
+            {% endif %}
+                style="width:120px;height:76px;">
+            </img>
+            </a>
+          {% else %}
+          <iframe width="240px" height="135px"
+            src="https://www.youtube.com/embed/{{ result.vid }}?rel=0&amp;controls=0&amp;showinfo=0"
+            frameborder="0" allowfullscreen></iframe>
+          {% endif %}
+        </td>
+        {% endif %}
+        <td>
+          <p>
+          <b>
+            <span style="font-size: 16px; color: rgb(26, 115, 232);"><i>
+            {% if result.cat == 'solution' %}
+              Solution
+            {% elif result.cat == 'learning' %}
+              {% if "qlCourse" in result.subtitle %}
+              Course
+              {% elif "qlModule" in result.subtitle %}
+              Module
+              {% elif "qlQuest" in result.subtitle %}
+              Quest
+              {% elif "SPL" in result.subtitle %}
+              SPL
+              {% elif "lab" in result.subtitle %}
+              Lab
+              {% else %}
+              Learning
+              {% endif %}
+            {% elif result.cat == 'next2018' or result.cat == 'next2019' or result.cat == 'next2020' %}
+              Session
+            {% else %}
+              Video
+            {% endif %}
+            name</i></span>:
+
+            {% if result.cat == 'learning' %}
+              {% if "qlCourse" in result.subtitle %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ result.title }}&format[]=courses&format[]=external-courses" target="_blank">{{ result.title }}</a>
+              {% elif "qlModule" in result.subtitle %}
+                {{ result.title }}
+              {% elif "qlQuest" in result.subtitle %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ result.title }}&format[]=quests" target="_blank">{{ result.title }}</a>
+              {% elif "SPL" in result.subtitle %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ result.title }}&format[]=labs" target="_blank">{{ result.title }}</a>
+              {% elif "lab" in result.subtitle %}
+                {{ result.title }}
+              {% else %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ result.title }}&format[]=all" target="_blank">{{ result.title }}</a>
+              {% endif %}
+            {% else %}
+              {{ result.title }}
+            {% endif %}
+            <br/>
+          </b>
+
+          {% if result.subtitle %}
+            <span style="color: rgb(26, 115, 232);">
+              <i>Subtitle</i>
+            </span>: {{ result.subtitle }}
+            <br/>
+          {% endif %}
+          {% if result.slides_link and (result.cat != 'accelerate2017') and
+                (result.cat == 'solution' or user_is_googler) %}
+          <b>
+            <span style="color: rgb(26, 115, 232);">
+              {% if result.cat == 'solution' %}
+                <i>Solution:</i>
+                <img src="/static/logo_google_cloud.svg" alt="solution link"
+                     style="width:40px;height:40px;">
+                </img>
+                <textarea id="hideslides{{ result.uniqueid }}" readonly
+                          style="position: absolute; left: -9999px;">
+                  {{ result.slides_link }}
+                </textarea>
+                <button class="mdl-button mdl-js-button"
+                        onclick="trackOutboundLink('', '{{ result.title|tojssafearg }}', '{{ result.slides_link }}'); return false">
+                        Open solution
+                </button>
+                <button class="mdl-button mdl-js-button"
+                        onclick="copySlides('hideslides{{ result.uniqueid }}', '{{ result.title|tojssafearg }}', '{{ result.slides_link }}')">
+                        Copy solution link
+                </button>
+              {% elif user_is_googler %}
+                {% if result.cat == 'learning' %}
+                  {% if "qlCourse" in result.subtitle %}
+                    <i>Course:</i>
+                    <img src="/static/applicationdevelopment.svg" alt="learning link"
+                         style="width:40px;height:40px;">
+                    </img>
+                  {% elif "qlModule" in result.subtitle %}
+                    <i>Module:</i>
+                    <img src="/static/machinelearning.svg" alt="learning link"
+                         style="width:40px;height:40px;">
+                    </img>
+                  {% elif "qlQuest" in result.subtitle %}
+                    <i>Quest:</i>
+                    <img src="/static/mobility.svg" alt="learning link"
+                         style="width:40px;height:40px;">
+                    </img>
+                  {% elif "qlLab" in result.subtitle and "SPL" in result.subtitle %}
+                    <i>SPL:</i>
+                    <img src="/static/qlbadge.jpeg" alt="learning link"
+                         style="width:40px;height:40px;">
+                    </img>
+                  {% elif "qlLab" in result.subtitle %}
+                    <i>Lab:</i>
+                    <img src="/static/qwiklabs_logo.png" alt="learning link"
+                         style="width:40px;height:40px;">
+                    </img>
+                  {% else %}
+                    <i>Learning:</i>
+                    <img src="/static/next2018_favicon.ico.png" alt="learning link"
+                         style="width:40px;height:40px;">
+                    </img>
+                  {% endif %}
+                {% else %}
+                  <i>Slides:</i>
+                  <img src="/static/slides-icon.png" alt="slides link"
+                       style="width:40px;height:40px;">
+                  </img>
+                {% endif %}
+                <textarea id="hideslides{{ result.uniqueid }}" readonly
+                          style="position: absolute; left: -9999px;">
+                  {{ result.slides_link }}
+                </textarea>
+                <button class="mdl-button mdl-js-button"
+                        onclick="window.open('/learningdetails?uniqueid={{ result.uniqueid }}'); return false;">
+                  {% if "qlCourse" in result.subtitle %}
+                  Course
+                  {% elif "qlModule" in result.subtitle %}
+                  Module
+                  {% elif "qlQuest" in result.subtitle %}
+                  Quest
+                  {% elif "SPL" in result.subtitle %}
+                  SPL
+                  {% elif "lab" in result.subtitle %}
+                  Lab
+                  {% else %}
+                  Learning
+                  {% endif %}
+                  details
+                </button>
+                <button class="mdl-button mdl-js-button"
+                        onclick="trackOutboundLink('', '{{ result.title|tojssafearg }}', '{{ result.slides_link }}'); return false;">
+                        {% if result.cat == 'learning' %}
+                          {% if "qlCourse" in result.subtitle %}
+                          Open Course yaml
+                          {% elif "qlModule" in result.subtitle %}
+                          Open Module yaml
+                          {% elif "qlQuest" in result.subtitle %}
+                          Open Quest yaml
+                          {% elif "SPL" in result.subtitle %}
+                          Open SPL yaml
+                          {% elif "qlLab" in result.subtitle %}
+                          Open Lab yaml
+                          {% else %}
+                          Open yaml
+                          {% endif %}
+                        {% else %}
+                        Open slides
+                        {% endif %}
+                </button>
+                <button class="mdl-button mdl-js-button"
+                        onclick="copySlides('hideslides{{ result.uniqueid }}', '{{ result.title|tojssafearg }}', '{{ result.slides_link }}')">
+                        {% if result.cat == 'learning' %}
+                          {% if "qlCourse" in result.subtitle %}
+                          Copy Course yaml link
+                          {% elif "qlModule" in result.subtitle %}
+                          Copy Module yaml link
+                          {% elif "qlQuest" in result.subtitle %}
+                          Copy Quest yaml link
+                          {% elif "SPL" in result.subtitle %}
+                          Copy SPL yaml link
+                          {% elif "qlLab" in result.subtitle %}
+                          Copy Lab yaml link
+                          {% else %}
+                          Copy yaml link
+                          {% endif %}
+                        {% else %}
+                        Copy slides link
+                        {% endif %}
+                </button>
+              {% endif %}
+            </span>
+          </b><br/>
+          {% endif %}
+          <span style="color: rgb(26, 115, 232);">
+            <i>
+            {% if result.cat == 'solution' %}
+              Solution
+            {% elif result.cat == 'learning' %}
+              {% if "qlCourse" in result.subtitle %}
+              Course
+              {% elif "qlModule" in result.subtitle %}
+              Module
+              {% elif "qlQuest" in result.subtitle %}
+              Quest
+              {% elif "SPL" in result.subtitle %}
+              SPL
+              {% elif "qlLab" in result.subtitle %}
+              Lab
+              {% else %}
+              Learning
+              {% endif %}
+            {% else %}
+              Video
+            {% endif %}
+            Description
+            </i>
+          </span>: {{ result.desc|safe }}<br/>
+          {% if result.speakers %}
+          <span style="color: rgb(26, 115, 232);">
+            <i>
+            {% if result.cat == 'solution' %}
+              Authors
+            {% else %}
+              Speakers
+            {% endif %}
+            </i>
+          </span>: {{ result.speakers|safe }}<br/>
+          {% endif %}
+          {#
+          <span style="color: rgb(26, 115, 232);">
+            <i>Average Rating</i>
+          </span>:
+           {% if result.avg_rating < 1 %}
+              None yet
+           {% else %}
+             {{ result.avg_rating }}
+           {% endif %}
+          <br/>
+          #}
+          {% if result.cat == 'solution' %}
+            <a href="/solution?uniqueid={{ result.uniqueid }}">View solution details</a>
+            {% if result.published_date %}
+            &nbsp;-&nbsp;
+            Published: {{ result.published_date.strftime('%Y-%m-%d') }}
+            {% endif %}
+          {% elif result.cat == 'accelerate2017' %}
+            <button class="mdl-button mdl-js-button"
+                    onclick="window.open('/accelerate?uniqueid={{ result.uniqueid }}'); return false;">
+              Video details
+            </button>
+          {% elif result.cat == 'learning' %}
+            {% if result.published_date %}
+            <span style="color: rgb(26, 115, 232);">
+              <i>
+              {% if "qlCourse" in result.subtitle %}
+              Course template
+              {% elif "qlModule" in result.subtitle %}
+              Course template
+              {% elif "qlQuest" in result.subtitle %}
+              Quest template
+              {% elif "SPL" in result.subtitle %}
+              SPL
+              {% elif "lab" in result.subtitle %}
+              Lab
+              {% else %}
+              Learning
+              {% endif %}
+              last updated:
+              </i>
+            </span>
+            {{ result.published_date }}
+            {% endif %}
+          {% else %}
+            {% if result.cat == 'next2018' and result.sessionid %}
+              <button class="mdl-button mdl-js-button"
+                      onclick="window.open('https://cloud.withgoogle.com/next18/sf/sessions/session/{{ result.sessionid }}'); return false;">
+                Official session page
+              </button>
+            {% elif result.cat == 'next2019' and result.sessionid %}
+              <button class="mdl-button mdl-js-button"
+                      onclick="window.open('https://cloud.withgoogle.com/next/sf/sessions?session={{ result.sessionid }}'); return false;">
+                Official session page
+              </button>
+            {% elif result.cat == 'next2020' and result.sessionid %}
+              <button class="mdl-button mdl-js-button"
+                      onclick="window.open('https://cloud.withgoogle.com/next/sf/sessions?session={{ result.sessionid }}'); return false;">
+                Official session page
+              </button>
+            {% endif %}
+            <button class="mdl-button mdl-js-button"
+                    onclick="window.open('/video?uniqueid={{ result.uniqueid }}'); return false;">
+              Video details
+            </button>
+          {% endif %}
+          {# &nbsp;
+          <a href="/reviews?pid={{ result.vid }}&vname={{ result.title }}">
+            Reviews
+          </a>
+          #}
+          {% if result.cat != 'solution' %}
+            {% if result.vid %}
+              <button class="mdl-button mdl-js-button"
+              {% if result.cat == 'accelerate2017' %}
+                onclick="trackOutboundLink('{{ result.cat }}', '{{ result.title|tojssafearg }}', '{{ result.slides_link }}'); return false;">
+              {% else %}
+                onclick="trackOutboundLink('video', '{{ result.title|tojssafearg }}', 'https://youtu.be/{{ result.vid }}'); return false;">
+              {% endif %}
+                Open video full-size
+              </button>
+              <textarea id="hidevid{{ result.uniqueid }}" readonly
+                        style="position: absolute; left: -9999px;">
+                https://youtu.be/{{ result.vid }}
+              </textarea>
+              <button class="mdl-button mdl-js-button"
+                      onclick="copySlides('hidevid{{ result.uniqueid }}', '{{ result.title|tojssafearg }}', 'https://youtu.be/{{ result.vid }}')">
+                      Copy video link
+              </button>
+            {% endif %}
+
+            {% if result.cat != 'learning' %}
+            <table>
+              <tbody>
+                <tr>
+                  {% if result.cat != 'accelerate2017' %}
+                  <td valign="middle">
+              <span style="color: rgb(26, 115, 232);">
+                <i>Views</i>
+              </span>: {{ result.views|int }}<br>
+                  </td>
+                  {% endif %}
+                  <td valign="middle">
+              <span style="color: rgb(26, 115, 232);">
+                <i>Event</i>
+              </span>:
+                  </td>
+                  <td>
+              {% if result.cat == 'next2016' %}
+                <img src="/static/next2016logo.png" alt="{{ result.cat }}"
+                     style="width:100px;height:30px;">
+                </img>
+              {% elif result.cat == 'next2017' %}
+                <img src="/static/next2017logo.svg" alt="{{ result.cat }}"
+                     style="width:60px;height:30px;">
+                </img>
+              {% elif result.cat == 'next2018' %}
+                <img src="/static/next2018logo.png" alt="{{ result.cat }}"
+                    style="width:60px;height:40px;">
+                </img>
+              {% elif result.cat == 'next2019' %}
+                <span style="font-family: Google Sans,Roboto,sans-serif; font-size: 28px; color: rgb(26, 115, 232);">
+                  Next '19
+                </span>
+              {% elif result.cat == 'next2020' %}
+                <span style="font-family: Google Sans,Roboto,sans-serif; font-size: 28px; color: rgb(26, 115, 232);">
+                  Next '20
+                </span>
+              {% elif result.cat == 'accelerate2017' %}
+                <img src="/static/acceleratelogo.png" alt="{{ result.cat }}"
+                     style="width:180px;height:30px;">
+                </img>
+              {% else %}
+                {{ result.cat }}&nbsp;-&nbsp;
+              {% endif %}
+                    </td>
+                    <td valign="middle">
+              <span style="color: rgb(26, 115, 232);">
+                <i>Duration (min)</i>
+              </span>: {{ result.duration|int }}<br>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            {% endif %}
+          {% endif %}
+         </p>
+        </td>
+      </tr>
+    {% endfor %}
+
+    </table>
+
+    {% if prev_link or next_link %}
+    <p>
+      {% if prev_link %}
+        <a href="{{prev_link}}">Previous Results</a>
+      {% else %}
+        Previous Results
+      {% endif %}
+       |
+      {% if next_link %}
+        <a href="{{next_link}}">Next Results</a>
+      {% else %}
+        Next Results
+      {% endif %}
+      {% if returned_count > 0 %}
+        | {{ first_res }} - {{ last_res }} of {{ number_found }}
+      {% endif %}
+    </p>
+    {% endif %}
+
+  </div>
+  {% else %}
+    {%if print_query %}
+      <p>No results found.</p>
+    {% endif %}
+  {% endif %}
+
+<script type="text/javascript" src="/static/js/dialog-polyfill.js"></script>
+<script type="text/javascript" language="JavaScript">
+  <!-- Set focus to query box initially. -->
+  document.forms['searchform'].elements['query'].focus();
+
+  <!-- Create dialog handlers. -->
+  var dialog = document.querySelector('#create_dialog');
+  var showDialogButton = document.querySelector('#create_button');
+  if (! dialog.showModal) {
+    <!-- Support for browsers without dialog. -->
+    dialogPolyfill.registerDialog(dialog);
+  }
+  showDialogButton.addEventListener('click', function() {
+    dialog.showModal();
+  });
+  dialog.querySelector('.close').addEventListener('click', function() {
+    dialog.close();
+  });
+  dialog.querySelector('.create').addEventListener('click', function() {
+    document.getElementById("playlistfield").value = "create";
+    document.forms['searchform'].submit();
+    dialog.close();
+  });
+</script>
+
+{% endblock %}

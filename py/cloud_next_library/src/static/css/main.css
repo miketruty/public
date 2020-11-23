@@ -1,0 +1,55 @@
+/* I prefer Roboto to be the primary font. It's more compact. */
+body {margin:0; padding:0; font-family:'Roboto','Helvetica','Arial',sans-serif!important;}
+
+/* Padding to separate the overall cells a bit. */
+th, td {
+  padding: 5px;
+}
+
+/* Trying to get an image into the header. */
+/* The tab bar messes it up.
+.mdl-layout__header {
+  background-image:url('/static/next_clouds_golden_gate.png');
+  background-position:left;
+  background-repeat:no-repeat;
+  height:120px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+*/
+
+/* Make the drawer wider to avoid wrapping. */
+.mdl-layout__drawer {
+  width: 340px;
+  left: -250px;
+}
+
+.mdl-layout__drawer.is-visible {
+  left: 0;
+}
+
+.mdl-mini-footer {
+  background-color: rgb(63,81,181);
+}
+
+/* Helps the solution description rendering to wrap. */
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    background-color: #f5f5f5;   /* WhiteSmoke */
+}
+
+/* Fade background slightly to emphasize dialog. */
+dialog::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}

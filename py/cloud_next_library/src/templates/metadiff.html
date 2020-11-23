@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Metadata Differences</title>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Metadata Differences from YouTube</h1>
+
+{% if stats %}
+  <b>Stats:</b><br>
+  <table>
+    <tbody>
+      <tr>
+        <td style="text-align:center;">YouTube videos checked:</td>
+        <td>{{ stats.0 }}</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">Unchanged Title:</td>
+        <td>{{ stats.1 }}</td>
+        <td style="text-align:center;">CHANGED Title:</td>
+        <td style="text-align:center;">{{ stats.0 - stats.1 }}</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">Unchanged Description:</td>
+        <td>{{ stats.2 }}</td>
+        <td style="text-align:center;">CHANGED Description:</td>
+        <td style="text-align:center;">{{ stats.0 - stats.2 }}</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"></td>
+        <td style="text-align:center;"></td>
+        <td style="text-align:center;">Added Speakers:</td>
+        <td style="text-align:center;">{{ stats.3 }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+{% endif %}
+
+{% if errors %}
+  <b>Errors:</b> {{ errors }}
+<hr>
+{% endif %}
+
+{% if metadata %}
+<table>
+  <thead>
+    <tr>
+      <td><b>#</b></td>
+      <td><b>Video</b></td>
+      <td><b>Details</b></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for video_id, details in metadata.iteritems() %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>
+        <a href="http://youtu.be/{{ video_id }}" target="_blank">
+          {{ video_id }}
+        </a>
+      </td>
+      <td>
+        {% if details.title_youtube %}
+          <b>YouTube Title:</b>
+          {{ details.title_youtube.0 }}<br>
+        {% endif %}
+        {% if details.title %}
+          <b>Updated Title:</b>
+          {{ details.title }}<br>
+        {% endif %}
+        {% if details.title_youtube %}
+          <pre>{{ details.title_youtube.1 }}</pre>
+        {% endif %}
+        {% if details.description_youtube %}
+          <b>YouTube Description:</b>
+          {{ details.description_youtube.0 }}<br>
+        {% endif %}
+        {% if details.description %}
+          <b>Updated Description:</b>
+          {{ details.description }}<br>
+        {% endif %}
+        {% if details.description_youtube %}
+          <pre>{{ details.description_youtube.1 }}</pre>
+        {% endif %}
+        {% if details.speakers %}
+          <b>Updated Speakers:</b>
+          {{ details.speakers }}<br>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

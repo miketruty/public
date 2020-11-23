@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Information for {{ title }}</title>
+{% endblock %}
+
+
+{% block content %}
+
+      <h2>{{ title }}</h2>
+
+      <!-- For expository purposes, all document fields are listed below with their actual names; -->
+      <!-- a real customer-facing app would expose this information differently. -->
+
+      <p><br/>
+      <table>
+        <tbody>
+      {% for field in prod_doc.fields %}
+          <tr>
+          {% if field.name == "slides_link" %}
+            <td><b>Links</b></td>
+            <td>
+              {% if "qlCourse" in subtitle %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ title }}&format[]=courses&format[]=external-courses" target="_blank">
+                  Qwiklabs Course search</a>&nbsp;&nbsp;
+              {% elif "qlQuest" in subtitle %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ title }}&format[]=quests" target="_blank">
+                  Qwiklabs Quest search</a>&nbsp;&nbsp;
+              {% elif "SPL" in subtitle %}
+                <a href="https://google.qwiklabs.com/catalog?keywords={{ title }}&format[]=labs" target="_blank">
+                  Qwiklabs SPL search</a>&nbsp;&nbsp;
+              {% endif %}
+              <a href="{{ field.value }}"
+                 onclick="trackOutboundLink('learning', '{{ title }}', '{{ field.value }}'); return false;"
+                 oncontextmenu="return false;">
+                {% if "qlCourse" in subtitle %}
+                Review Course template yaml
+                {% elif "qlModule" in subtitle %}
+                Review Course template yaml
+                {% elif "qlQuest" in subtitle %}
+                Review Quest yaml
+                {% elif "SPL" in subtitle %}
+                Review SPL yaml
+                {% elif "qlLab" in subtitle %}
+                Review lab yaml
+                {% else %}
+                Review yaml
+                {% endif %}
+              </a>
+            </td>
+          {% endif %}
+          {% if field.name == "subtitle" and field.value %}
+            <td><b>Level</b></td>
+            <td>{{ field.value }}</td>
+          {% endif %}
+          {% if field.name == "description" %}
+            <td><b>Description and Learning Objectives</b></td>
+            <td><pre>{{ field.value }}</pre></td>
+          {% endif %}
+          {% if field.name == "speakers" and field.value %}
+            <td><b>speakers</b></td>
+            <td>
+              <ul>
+              {% for s in field.value.split(';') %}
+                {% if s %}
+                <li>{{ s|safe }}</li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            </td>
+          {% endif %}
+
+          {% if field.name == "published_date" and field.value %}
+            {% if "qlCourse" in subtitle %}
+            <td><b>Course template last updated</b></td>
+            {% elif "qlModule" in subtitle %}
+            <td><b>Course template last updated</b></td>
+            {% elif "qlQuest" in subtitle %}
+            <td><b>Quest template last updated</b></td>
+            {% elif "SPL" in subtitle %}
+            <td><b>SPL last updated</b></td>
+            {% elif "qlLab" in subtitle %}
+            <td><b>Lab last updated</b></td>
+            {% else %}
+            <td><b>Learning last updated</b></td>
+            {% endif %}
+
+            {# <td>{{ (field.value).strftime('%Y-%m-%d') }}</td> #}
+            <td>{{ field.value }}</td>
+          {% endif %}
+
+          {#
+          {% if field.name == "image" %}
+            <td><b>image</b></td>
+            <td>
+              <a href="{{ field.value }}" target="_blank">
+              {% if field.value %}
+              <img src="{{ field.value }}" alt="solution"
+              {% else %}
+              <img src="/static/logo_google_cloud.svg" alt="solution"
+              {% endif %}
+                   style="width:560px;height:315px;">
+              </img>
+              </a>
+              <br>
+            </td>
+          {% endif %}
+          #}
+          </tr>
+      {% endfor %}
+        </tbody>
+      </table>
+
+      <hr>
+
+{% endblock %}

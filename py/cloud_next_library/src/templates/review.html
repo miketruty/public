@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Reviews for {{vname}}</title>
+{% endblock %}
+
+{% block content %}
+
+  <p></p>
+  <p>Back to video <a href="{{video_url}}">{{vname}}</a></p>
+
+   <h3>New review for {{vname}}</h3>
+
+    <h4>
+
+      <p>
+       Username: {{review.username}} <br/>
+       Rating: {{review.rating}} <br/>
+       Comment: {{review.comment}} <br/>
+      </p>
+
+{% endblock %}

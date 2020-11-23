@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Official Next '18</title>
+{% endblock %}
+
+
+{% block content %}
+
+<h3>Official Next '18 Searches</h3>
+<ul>
+  <li>
+    <a href="https://cloud.withgoogle.com/next18/sf/"
+       target="_blank">
+      Official Next '18 from San Francisco
+    </a>
+  </li>
+  <li>
+    <a href="http://goto/next2018-featured-sessions"
+       target="_blank">
+      Next '18 PM-highlighted sessions by area
+    </a>
+  </li>
+  <li>
+    <a href="https://cloud.withgoogle.com/next18/sf/sessions"
+       target="_blank">
+      Next '18 sessions
+    </a>
+  </li>
+  <li>
+    <a href="https://cloud.withgoogle.com/next18/sf/speakers"
+        target="_blank">
+      Next '18 speakers
+   </a>
+  </li>
+  <li>
+    <a href="/playlists" target="_blank">
+      Next '18 YouTube Playlists
+   </a>
+  </li>
+</ul>
+
+<h3>Next '18 Themes</h3>
+
+<ul>
+  {% for s in next18_themes %}
+  <li>
+    <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<h3>Next '18 Session Types</h3>
+
+<ul>
+  {% for s in next18_types %}
+  <li>
+    <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<h3>Next '18 Topics</h3>
+
+<ul>
+  {% for s in next18_other %}
+  <li>
+    <a href="/vsearch?{{ s[0]|escape }}" target="_blank">{{ s[1] }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+
+{% endblock %}
