@@ -1,0 +1,7 @@
+name = "pysample"
+type = "webpack"
+account_id = "1079c824b59f2b730a45464037dc7ffb"
+workers_dev = true
+route = ""
+zone_id = ""
+webpack_config = "webpack.config.js"
