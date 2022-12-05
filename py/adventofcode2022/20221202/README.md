@@ -1,5 +1,7 @@
 # Day 2: Rock Paper Scissors
 
+[puzzle](https://adventofcode.com/2022/day/2)
+
 ## Part 1
 
 The Elves begin to set up camp on the beach. To decide whose tent gets to be
@@ -74,4 +76,3 @@ goes like this:
 
 Following the Elf's instructions for the second column, what would your total
 score be if everything goes exactly according to your strategy guide?
-

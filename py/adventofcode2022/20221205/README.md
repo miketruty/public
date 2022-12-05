@@ -1,5 +1,7 @@
 # Day 5: Supply Stacks
 
+[puzzle](https://adventofcode.com/2022/day/5)
+
 ## Part 1
 
 The expedition can depart as soon as the final supplies have been unloaded from

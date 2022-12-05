@@ -1,4 +1,6 @@
-# --- Day 1: Calorie Counting ---
+# Day 1: Calorie Counting
+
+[puzzle](https://adventofcode.com/2022/day/1)
 
 ## Part 1
 

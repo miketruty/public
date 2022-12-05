@@ -1,5 +1,7 @@
 # Day 4: Camp Cleanup
 
+[puzzle](https://adventofcode.com/2022/day/4)
+
 ## Part 1
 
 Space needs to be cleared before the last supplies can be unloaded from the

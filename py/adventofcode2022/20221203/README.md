@@ -1,5 +1,7 @@
 # Day 3: Rucksack Reorganization
 
+[puzzle](https://adventofcode.com/2022/day/3)
+
 ## Part 1
 
 One Elf has the important job of loading all of the rucksacks with supplies for
