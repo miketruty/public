@@ -1,5 +1,9 @@
 # Day 5: Supply Stacks
 
+* Year: 2022
+* Month: December
+* Tags: AdventOfCode
+
 [puzzle](https://adventofcode.com/2022/day/5)
 
 ## Part 1

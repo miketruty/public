@@ -1,5 +1,9 @@
 # Day 2: Rock Paper Scissors
 
+* Year: 2022
+* Month: December
+* Tags: AdventOfCode
+
 [puzzle](https://adventofcode.com/2022/day/2)
 
 ## Part 1

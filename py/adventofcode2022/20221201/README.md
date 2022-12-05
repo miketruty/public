@@ -1,5 +1,9 @@
 # Day 1: Calorie Counting
 
+* Year: 2022
+* Month: December
+* Tags: AdventOfCode
+
 [puzzle](https://adventofcode.com/2022/day/1)
 
 ## Part 1

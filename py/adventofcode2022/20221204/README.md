@@ -1,5 +1,9 @@
 # Day 4: Camp Cleanup
 
+* Year: 2022
+* Month: December
+* Tags: AdventOfCode
+
 [puzzle](https://adventofcode.com/2022/day/4)
 
 ## Part 1

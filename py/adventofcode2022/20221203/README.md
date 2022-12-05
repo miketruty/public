@@ -1,5 +1,9 @@
 # Day 3: Rucksack Reorganization
 
+* Year: 2022
+* Month: December
+* Tags: AdventOfCode
+
 [puzzle](https://adventofcode.com/2022/day/3)
 
 ## Part 1
