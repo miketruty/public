@@ -6,7 +6,7 @@ import os
 import sys
 
 
-def part_score(input_filename: str, token_len) -> str:
+def part_score(input_filename: str, token_len) -> int:
     """Use a deque as a queue with a max-length
     """
     d = deque([], token_len)  # queue with max length token_len
