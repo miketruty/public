@@ -461,7 +461,11 @@ H123..  (2 covers 4)
 .1H3..  (H covers 2, 4)
 .5....
 6.....  (6 covers 7, 8, 9, s)
-Now, you need to keep track of the positions the new tail, 9, visits. In this example, the tail never moves, and so it only visits 1 position. However, be careful: more types of motion are possible than before, so you might want to visually compare your simulated rope to the one above.
+
+Now, you need to keep track of the positions the new tail, 9, visits. In this
+example, the tail never moves, and so it only visits 1 position. However, be
+careful: more types of motion are possible than before, so you might want to
+visually compare your simulated rope to the one above.
 
 Here's a larger example:
 
@@ -473,6 +477,7 @@ R 17
 D 10
 L 25
 U 20
+
 These motions occur as follows (individual steps are not shown):
 
 == Initial State ==
@@ -715,5 +720,6 @@ Now, the tail (9) visits 36 positions (including s) at least once:
 ........#........#........
 .........########.........
 
-Simulate your complete series of motions on a larger rope with ten knots. How many positions does the tail of the rope visit at least once?
+Simulate your complete series of motions on a larger rope with ten knots. How
+many positions does the tail of the rope visit at least once?
 

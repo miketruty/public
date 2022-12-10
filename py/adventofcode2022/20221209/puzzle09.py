@@ -1,27 +1,22 @@
 #!/usr/bin/python3
 # Model rope physics. Given path of head, simulate path of tail.
-#
-# In the example, a 6x5 grid is used and the tail visits 13 positions.
-#
-# Q: how do I decide how to size the grid?
-# Q: where do I start/place HT to begin?
-#
-# Thought: do I need a grid at all? Can I just track the coordinates of the two
-# and use relative comparisons to the two to model the movement without a 2-d
-# grid? I'd love that.
-#
-# If I do that, it might be harder to visualize the current positions though.
-# Maybe I don't care.
+# I didn't model this with a grid at all. I just track everything with
+# coordinate indices. Without a standard grid that means I have both positive
+# and negative coordinates; I start at 0,0.
 
 import os
 import sys
+
+
+ENABLE_PLOTS = False
 
 
 class Coord(object):
     """Make it easier to reason about coordinate manipulation.
     """
 
-    def __init__(self, x=0, y=0):
+    def __init__(self, label, x=0, y=0):
+        self.label = str(label)
         self.x = x
         self.y = y
 
@@ -72,11 +67,50 @@ class Coord(object):
 
 class RopeModel(object):
 
-    def __init__(self):
-        self.head_coord = Coord()
-        self.tail_coord = Coord()
+    def __init__(self, tail_count, size):
+        self.tail_count = tail_count
+        self.size = size  # number of coordinates
+        self.head_coord = Coord(0)
+        self.tail_coords = [Coord(i + 1) for i in range(self.tail_count)]
         self.head_locations = set()
         self.tail_locations = set()
+        self.width = 3  # width of cell for printing
+
+    def plot_model(self):
+        if not ENABLE_PLOTS:
+            return
+        # Just center 0,0 in the middle and allow for -size:+size grid.
+        stub = '.'
+
+        coords = {}
+        for c in [self.head_coord] + self.tail_coords:
+            t = c.make_tuple()
+            if t not in coords:
+                coords[t] = c.label.center(self.width)
+
+        if self.size % 2 == 0:
+            self.size += 1  # Helps to get low/high right
+        high = self.size // 2
+        low = high * -1
+
+        grid = []  # list of lists
+        header = [''.center(self.width)]
+        for i in range(low, high + 1):
+            index = str(i).center(self.width)
+            header.append(index)
+            row = [index]
+            for j in range(low, high + 1):
+                row.append(coords.get((i, j), stub.center(self.width)))
+            grid.append(row)
+
+        # Print it
+        print(' '.join(header))
+        for row in grid:
+            print(' '.join(row))
+        print('-' * 40)
+
+    def _get_tail_coord(self):
+        return self.tail_coords[self.tail_count - 1]
 
     def _move_head(self, direction: str) -> None:
         """Move the head location 1 space."""
@@ -95,16 +129,20 @@ class RopeModel(object):
 
     def _move_tail(self) -> None:
         """Update the tail location based on head."""
-        if not self.tail_coord.is_adjacent(self.head_coord):
+        prev_coord = self.head_coord
+        for c in self.tail_coords:
+            if c.is_adjacent(prev_coord):
+                break
             # If same row, follow
-            if self.tail_coord.is_same_row(self.head_coord):
-                self.tail_coord.follow_row(self.head_coord)
-            elif self.tail_coord.is_same_col(self.head_coord):
-                self.tail_coord.follow_col(self.head_coord)
+            if c.is_same_row(prev_coord):
+                c.follow_row(prev_coord)
+            elif c.is_same_col(prev_coord):
+                c.follow_col(prev_coord)
             else:
-                self.tail_coord.follow_diag(self.head_coord)
+                c.follow_diag(prev_coord)
+            prev_coord = c
 
-        self.tail_locations.add(self.tail_coord.make_tuple())
+        self.tail_locations.add(self._get_tail_coord().make_tuple())
 
     def count_tail_locations(self):
         return len(self.tail_locations)
@@ -114,14 +152,18 @@ class RopeModel(object):
         """
         direction, spaces_moved = line.split()
         for _ in range(int(spaces_moved)):
+            if ENABLE_PLOTS:
+                print(f'move {direction}')
             self._move_head(direction)
             self._move_tail()
+            self.plot_model()
 
 
 def part1_score(input_filename: str) -> int:
-    """Load up the forest (grid). Flag visible trees in the forest.
+    """Set up a rope mode with head/tail coordinates and work lines as moves.
     """
-    r = RopeModel()
+    r = RopeModel(1, 30)
+    r.plot_model()
     with open(input_filename, 'rt') as input_file:
         for line in input_file:
             r.move_head_tail(line.strip())
@@ -131,11 +173,12 @@ def part1_score(input_filename: str) -> int:
 def part2_score(input_filename: str) -> int:
     """Load up the forest (grid). Score visible trees in the forest.
     """
-    f = Forest()
+    r = RopeModel(9, 40)
+    r.plot_model()
     with open(input_filename, 'rt') as input_file:
         for line in input_file:
-            f.add_row(line.strip())
-    return f.score_visible_trees()
+            r.move_head_tail(line.strip())
+    return r.count_tail_locations()
 
 
 def main(argv):
@@ -143,8 +186,10 @@ def main(argv):
     if not os.path.isfile(input_filename):
         print(f'Error: cannot find file {input_filename}')
         sys.exit(-1)
+    print('Part 1')
     print(part1_score(input_filename))
-    #print(part2_score(input_filename))
+    print('Part 2')
+    print(part2_score(input_filename))
 
 
 if __name__ == '__main__':
