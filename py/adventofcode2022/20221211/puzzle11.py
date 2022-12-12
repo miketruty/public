@@ -18,6 +18,8 @@ class Monkey(object):
         self._if_true_to = 0
         self._if_false_to = 0
 
+        self._inspection_count = 0
+
     def get_name(self):
         return self._name
 
@@ -32,23 +34,42 @@ class Monkey(object):
     def extend_items(self, items):
         self._items.extend(items)
 
+    def add_item(self, item):
+        self._items.append(item)
+
     def get_item_count(self):
         return len(self._items)
 
     def pop_item(self):
-        return self._items.popleft()
+        self._inspection_count += 1
+        return self._items.popleft()  # queue - add right, pop left
 
     def add_operation(self, operation):
         self._operation = operation
 
+    def get_operation(self):
+        return self._operation
+
     def add_test_divisible(self, divisible_by):
         self._test_divisible = divisible_by
+
+    def get_test_divisible(self):
+        return self._test_divisible
 
     def add_if_true(self, throw_to):
         self._if_true_to = throw_to
 
+    def get_if_true(self):
+        return self._if_true_to
+
     def add_if_false(self, throw_to):
         self._if_false_to = throw_to
+
+    def get_if_false(self):
+        return self._if_false_to
+
+    def get_inspection_count(self):
+        return self._inspection_count
 
 
 class Jungle(object):
@@ -59,15 +80,41 @@ class Jungle(object):
     def add_monkey(self, m):
         self._monkeys[m.get_name()] = m
 
+    def throw_item(self, to_m, item):
+        self._monkeys[f'Monkey {to_m}'].add_item(item)
+
+    def calc_monkey_business(self):
+        counts = []
+        for m in self._monkeys.values():
+            counts.append(m.get_inspection_count())
+            print(f'{m.get_name()} inspected items {m.get_inspection_count()} times')
+        counts = sorted(counts)
+        return counts[-1] * counts[-2]
+
     def do_round(self):
         """Run through each monkey once and update.
         """
         for i in range(len(self._monkeys)):
             m = self._monkeys[f'Monkey {i}']
-            print(m)
+            print(m.get_name())
             for _ in range(m.get_item_count()):
-                item = m.pop_item()
-                print(item)
+                item = m.pop_item()  # inspect item with worry level
+                print(f'  Monkey inspects an item with a worry level of {item}')
+                old = item
+                new = eval(m.get_operation())
+                print(f'    Worry level is multiplied to {new}')
+                new //= 3  # relief that monkey inspection didn't damage
+                print(f'    Monkey gets bored with item. Worry level to {new}')
+                if new % m.get_test_divisible() != 0:
+                    print(f'    Current worry level is not divisible by {m.get_test_divisible()}')
+                    print(f'    Item with worry level {new} is thrown to monkey {m.get_if_false()}')
+                    new_m = m.get_if_false()
+                else:
+                    print(f'    Current worry level is divisible by {m.get_test_divisible()}')
+                    print(f'    Item with worry level {new} is thrown to monkey {m.get_if_true()}')
+                    new_m = m.get_if_true()
+                self.throw_item(new_m, new)
+            print()
 
 
 def part1_score(input_filename: str) -> int:
@@ -95,8 +142,9 @@ def part1_score(input_filename: str) -> int:
                 j.add_monkey(m)
         if m:
             j.add_monkey(m)
-    j.do_round()
-    return 0
+    for i in range(20):  # do 20 rounds
+        j.do_round()
+    return j.calc_monkey_business()
 
 
 # def part2_score(input_filename: str):
