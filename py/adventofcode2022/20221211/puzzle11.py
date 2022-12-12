@@ -4,6 +4,7 @@
 # addx V - 2 cycles
 
 from collections import deque
+import math
 import os
 import sys
 
@@ -74,8 +75,30 @@ class Monkey(object):
 
 class Jungle(object):
 
-    def __init__(self):
+    def __init__(self, input_filename):
         self._monkeys = {}
+
+        with open(input_filename, 'rt') as input_file:
+            m = None
+            for line in input_file:
+                if line.startswith('Monkey'):
+                    m = Monkey(line.strip()[:-1])
+                elif line.strip().startswith('Starting items:'):
+                    item_str = line.strip().split(':')[1].split(',')
+                    m.extend_items([int(i.strip()) for i in item_str])
+                elif line.strip().startswith('Operation: new'):
+                    m.add_operation(line.strip().split(' new = ')[1])
+                elif line.strip().startswith('Test: divisible by '):
+                    m.add_test_divisible(
+                        int(line.strip().split('divisible by ')[1]))
+                elif line.strip().startswith('If true:'):
+                    m.add_if_true(int(line.strip().split()[-1]))
+                elif line.strip().startswith('If false:'):
+                    m.add_if_false(int(line.strip().split()[-1]))
+                elif line.strip() == '':
+                    self.add_monkey(m)
+            if m:
+                self.add_monkey(m)
 
     def add_monkey(self, m):
         self._monkeys[m.get_name()] = m
@@ -91,69 +114,107 @@ class Jungle(object):
         counts = sorted(counts)
         return counts[-1] * counts[-2]
 
-    def do_round(self):
+    def get_best_relief_div(self):
+        # Try just multiplying all the monkey divisors by each other
+        d = 1
+        for m in self._monkeys.values():
+            d = lcm2(d, m.get_test_divisible())
+        return d
+
+    def do_round(self, relief_div):
         """Run through each monkey once and update.
         """
         for i in range(len(self._monkeys)):
             m = self._monkeys[f'Monkey {i}']
-            print(m.get_name())
+            # print(m.get_name())
             for _ in range(m.get_item_count()):
                 item = m.pop_item()  # inspect item with worry level
-                print(f'  Monkey inspects an item with a worry level of {item}')
+                # print(f'  Monkey inspects an item with a worry level of {item}')
                 old = item
                 new = eval(m.get_operation())
-                print(f'    Worry level is multiplied to {new}')
-                new //= 3  # relief that monkey inspection didn't damage
-                print(f'    Monkey gets bored with item. Worry level to {new}')
+                # print(f'    Worry level is multiplied to {new}')
+                new //= relief_div  # relief that monkey inspection didn't damage
+                # print(f'    Monkey gets bored with item. Worry level to {new}')
                 if new % m.get_test_divisible() != 0:
-                    print(f'    Current worry level is not divisible by {m.get_test_divisible()}')
-                    print(f'    Item with worry level {new} is thrown to monkey {m.get_if_false()}')
+                    # print(f'    Current worry level is not divisible by {m.get_test_divisible()}')
+                    # print(f'    Item with worry level {new} is thrown to monkey {m.get_if_false()}')
                     new_m = m.get_if_false()
                 else:
-                    print(f'    Current worry level is divisible by {m.get_test_divisible()}')
-                    print(f'    Item with worry level {new} is thrown to monkey {m.get_if_true()}')
+                    # print(f'    Current worry level is divisible by {m.get_test_divisible()}')
+                    # print(f'    Item with worry level {new} is thrown to monkey {m.get_if_true()}')
                     new_m = m.get_if_true()
                 self.throw_item(new_m, new)
-            print()
+
+
+def prime_factors(n):
+    factors = []
+    if not n:
+        return factors
+    # Start by looking for all the 2's
+    while n % 2 == 0:
+        factors.append(2)
+        n //= 2
+
+    # n is now odd. Look for odd factors from 3 to sqrt(n), skip evens (by 2).
+    for i in range(3, int(math.sqrt(n)) + 1, 2):
+        while n % i == 0:
+            factors.append(i)
+            n //= i
+
+    # Finally, if n is prime (indivisible) and >2, it's a factor.
+    if n > 2:
+        factors.append(n)
+
+    return factors
+
+
+def compute_GCD(n, m):
+    """Euclidean algorithm.
+    """
+    if n == 0 or m == 0:
+        return 0
+    while m:
+        n, m = m, n % m
+    return abs(n)
+
+
+def lcm1(n, m):
+    """Multiple to uncommon prime factors.
+    """
+    n_factors = prime_factors(n)
+    print(f'factors of {n} are {n_factors}')
+    m_factors = prime_factors(m)
+    print(f'factors of {m} are {m_factors}')
+    # TODO(miketru): find the common prime factors
+    # TODO(miketru): compare efficiency of this vs lcm2
+
+
+def lcm2(n, m):
+    """n*m / GCD(n, m)
+    """
+    if n == 0 or m == 0:
+        return 0
+    return n * m // compute_GCD(n, m)
 
 
 def part1_score(input_filename: str) -> int:
     """Set up a multi-monkey model.
     """
-    j = Jungle()
-    with open(input_filename, 'rt') as input_file:
-        m = None
-        for line in input_file:
-            if line.startswith('Monkey'):
-                m = Monkey(line.strip()[:-1])
-            elif line.strip().startswith('Starting items:'):
-                item_str = line.strip().split(':')[1].split(',')
-                m.extend_items([int(i.strip()) for i in item_str])
-            elif line.strip().startswith('Operation: new'):
-                m.add_operation(line.strip().split(' new = ')[1])
-            elif line.strip().startswith('Test: divisible by '):
-                m.add_test_divisible(
-                    int(line.strip().split('divisible by ')[1]))
-            elif line.strip().startswith('If true:'):
-                m.add_if_true(int(line.strip().split()[-1]))
-            elif line.strip().startswith('If false:'):
-                m.add_if_false(int(line.strip().split()[-1]))
-            elif line.strip() == '':
-                j.add_monkey(m)
-        if m:
-            j.add_monkey(m)
+    j = Jungle(input_filename)
     for i in range(20):  # do 20 rounds
-        j.do_round()
+        j.do_round(3)
     return j.calc_monkey_business()
 
 
-# def part2_score(input_filename: str):
-#     """Set up CPU model with clock and track related sprite.
-#     """
-#     with open(input_filename, 'rt') as input_file:
-#         instructions = deque([line.strip() for line in input_file])
-#     cpu = CPUModel()
-#     cpu.do_work(instructions)
+def part2_score(input_filename: str) -> int:
+    """Set up a multi-monkey model.
+    """
+    j = Jungle(input_filename)
+    # for i in range(10000):  # do 10000 rounds
+    for i in range(1):  # do 10000 rounds
+        j.do_round(j.get_best_relief_div())
+    return j.calc_monkey_business()
+
 
 def main(argv):
     input_filename = argv[1] if len(argv) > 1 else 'input'
@@ -162,6 +223,9 @@ def main(argv):
         sys.exit(-1)
     print('Part 1')
     print(part1_score(input_filename))
+    print()
+    print('Part 2')
+    print(part2_score(input_filename))
 
 
 if __name__ == '__main__':
