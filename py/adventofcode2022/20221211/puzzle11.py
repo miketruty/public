@@ -12,7 +12,7 @@ class Monkey(object):
 
     def __init__(self, name):
         self._name = name
-        self._items = []
+        self._items = deque()
         self._operation = ''  # new = old ...
         self._test_divisible = 1  # divisible by ...
         self._if_true_to = 0
@@ -31,6 +31,12 @@ class Monkey(object):
 
     def extend_items(self, items):
         self._items.extend(items)
+
+    def get_item_count(self):
+        return len(self._items)
+
+    def pop_item(self):
+        return self._items.popleft()
 
     def add_operation(self, operation):
         self._operation = operation
@@ -57,7 +63,11 @@ class Jungle(object):
         """Run through each monkey once and update.
         """
         for i in range(len(self._monkeys)):
-            print(self._monkeys[f'Monkey {i}'])
+            m = self._monkeys[f'Monkey {i}']
+            print(m)
+            for _ in range(m.get_item_count()):
+                item = m.pop_item()
+                print(item)
 
 
 def part1_score(input_filename: str) -> int:
