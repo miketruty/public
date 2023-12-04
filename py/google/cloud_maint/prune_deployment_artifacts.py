@@ -40,14 +40,12 @@ def prune_gcs_bundles(project_id, dt_cutoff):
     print(f'Pruned {bundles_removed} bundles from GCS.\n')
 
 
-def prune_docker_images(project_id, dt_cutoff):
+def prune_docker_images(project_id, repo_location, repo_name,
+                        package_name, dt_cutoff):
     """Removes older docker images from our deployment workflow.
     """
     images_removed = 0
 
-    repo_location = 'us-west1'
-    repo_name = 'cloud-run-source-deploy'
-    package_name = 'test-dashboard-svc'
     parent = (f'projects/{project_id}/locations/{repo_location}/'
               f'repositories/{repo_name}/packages/{package_name}')
 
@@ -64,13 +62,12 @@ def prune_docker_images(project_id, dt_cutoff):
            'cloud-run-source-deploy artifact repo.\n')
 
 
-def prune_cloud_run_revisions(project_id, dt_cutoff):
+def prune_cloud_run_revisions(project_id, service_location, service_name,
+                              dt_cutoff):
     """Removes older Cloud Run revisions from our deployment workflow.
     """
     revisions_removed = 0
 
-    service_location = 'us-west1'
-    service_name = 'test-dashboard-svc'
     parent = (f'projects/{project_id}/locations/{service_location}/'
               f'services/{service_name}')
 
@@ -93,12 +90,20 @@ def main():
     if not project_id:
         print(f'You must set the CLOUD_PROJECT_ID environment var!')
         sys.exit(-1)
+    repo_location = 'us-west1'
+    repo_name = 'cloud-run-source-deploy'
+    package_name = 'test-dashboard-svc'
+    service_location = 'us-west1'
+    service_name = 'test-dashboard-svc'
+
     one_week_ago = datetime.utcnow() - timedelta(days=7)  # no timezone
     dt_cutoff = one_week_ago.replace(tzinfo=timezone.utc)  # with timezone
 
     prune_gcs_bundles(project_id, dt_cutoff)
-    prune_docker_images(project_id, dt_cutoff)
-    prune_cloud_run_revisions(project_id, dt_cutoff)
+    prune_docker_images(project_id, repo_location, repo_name, package_name,
+                        dt_cutoff)
+    prune_cloud_run_revisions(project_id, service_location, service_name,
+                              dt_cutoff)
 
 
 if __name__ == '__main__':
