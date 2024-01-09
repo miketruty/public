@@ -1,0 +1,14 @@
+mxt0623@FCWWYF7FWQ 2023q4_cloud_run_iap % python3 ./get_token_make_request.py
+Trying aud=478061995323-0gvgnjkochgc91gf276jkten1lcegcke.apps.googleusercontent.com...
+Generated ID token with expiration: 2024-01-09 18:51:13.
+HTTP Error 401: Unauthorized
+https://dexcom-vnv-testrail-webhook.dexcomdev.com
+b"Invalid IAP credentials: Service Account doesn't match the authorized party for this application. ('sub' claim (115964417810304946636) doesn't match expected value (vnv-test-data-firestore-writer@dev-us-5g-vnvtestdata-1.iam.gserviceaccount.com))"
+  result: 
+----------------------------------------
+
+mxt0623@FCWWYF7FWQ 2023q4_cloud_run_iap % python3 ./get_token_make_request.py
+Trying aud=478061995323-0gvgnjkochgc91gf276jkten1lcegcke.apps.googleusercontent.com...
+Generated ID token with expiration: 2024-01-09 18:51:14.
+  result: b'Hello Mike World!'
+----------------------------------------
