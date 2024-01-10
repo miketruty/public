@@ -2,14 +2,39 @@
 
 import urllib
 
+from google.oauth2 import id_token
 from google.oauth2 import service_account
 
-import google.auth.transport.requests
-from google.oauth2 import id_token
+from google.auth.transport import requests
 
 
 SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 JSON_FILE="/Users/mxt0623/vnvtestdata_firestore_writer.json"
+
+
+def validate_iap_jwt(iap_jwt, expected_audience):
+    """Validate an IAP JWT.
+
+    Args:
+      iap_jwt: The contents of the X-Goog-IAP-JWT-Assertion header.
+      expected_audience: The Signed Header JWT audience. See
+          https://cloud.google.com/iap/docs/signed-headers-howto
+          for details on how to get this value.
+
+    Returns:
+      (user_id, user_email, error_str).
+    """
+
+    try:
+        decoded_jwt = id_token.verify_token(
+            iap_jwt,
+            requests.Request(),
+            audience=expected_audience,
+            # certs_url="https://www.gstatic.com/iap/verify/public_key",
+        )
+        return (decoded_jwt["sub"], decoded_jwt["email"], "")
+    except Exception as e:
+        return (None, None, f"**ERROR: JWT validation error {e}**")
 
 
 def get_idToken_from_serviceaccount(json_credential_path: str,
@@ -38,6 +63,11 @@ def get_idToken_from_serviceaccount(json_credential_path: str,
     credentials.refresh(google.auth.transport.requests.Request())
     print(f'Generated ID token with expiration: {credentials.expiry}.')
     print(f'    Token: {credentials.token}.')
+    user_id, user_email, error_str = validate_iap_jwt(
+        iap_jwt=credentials.token, expected_audience=target_audience)
+    if (not user_id) or (not user_email):
+        print(f'Invalid token: user_id={user_id}, user_email={user_email}, '
+              f'error_str={error_str}')
     return credentials.token
 
 
