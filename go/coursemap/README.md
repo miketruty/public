@@ -16,6 +16,9 @@ Use cases:
 
 ## Code Organization
 
+This ia a go CLI but I did not use an existing go CLI framework like Cobra.
+See **ofcourses** for that.
+
 *   main
     *   coursemap.go - main, with subcommands: describe, simplify, validate, and
                        yamltojson
