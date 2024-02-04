@@ -86,10 +86,11 @@ def prune_cloud_run_revisions(project_id, service_location, service_name,
 def main():
     """Do all the work.
     """
-    project_id = os.getenv('CLOUD_PROJECT_ID')
-    if not project_id:
-        print(f'You must set the CLOUD_PROJECT_ID environment var!')
-        sys.exit(-1)
+    # project_id = os.getenv('CLOUD_PROJECT_ID')
+    # if not project_id:
+    #     print(f'You must set the CLOUD_PROJECT_ID environment var!')
+    #     sys.exit(-1)
+    project_id = 'dev-us-5g-vnvtestdata-1'
     repo_location = 'us-west1'
     repo_name = 'cloud-run-source-deploy'
     package_name = 'test-dashboard-svc'
